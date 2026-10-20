@@ -1,9 +1,13 @@
 const isGithubPages = process.env.GITHUB_PAGES === "true";
+const isVercel = process.env.VERCEL === "1";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  ...(isGithubPages ? { output: "export", basePath: "/Centre-sentinel" } : {}),
-  ...(process.env.DOCKER_BUILD === "1" ? { output: "standalone" } : {}),
+  ...(isGithubPages
+    ? { output: "export", basePath: "/Centre-sentinel" }
+    : isVercel
+    ? {}
+    : { output: "standalone" }),
   reactStrictMode: true,
   poweredByHeader: false,
   images: {
