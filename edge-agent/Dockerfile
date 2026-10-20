@@ -42,8 +42,9 @@ ENV PATH=/home/appuser/.local/bin:$PATH
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 
-# Copy application source code
-COPY --chown=appuser:appgroup main.py evaluator.py test_edge.py ./
+# Copy application source code and database
+COPY --chown=appuser:appgroup main.py evaluator.py test_edge.py database.py ./
+COPY --chown=appuser:appgroup data/ ./data/
 
 # Switch to non-root user
 USER appuser

@@ -1,0 +1,47 @@
+services:
+  # 1. Edge Inference Agent (Python FastAPI + YOLOv8 + OpenCV + SQLite)
+  - type: web
+    name: kaushal-edge-agent
+    env: python
+    region: oregon
+    plan: free
+    rootDir: edge-agent
+    buildCommand: "pip install --upgrade pip && pip install -r requirements.txt"
+    startCommand: "python -m uvicorn main:app --host 0.0.0.0 --port $PORT"
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: EDGE_NODE_ID
+        value: EDGE-NODE-MSDE-042
+      - key: CENTRE_ID
+        value: TC-JH-RNC-081
+      - key: CENTRE_NAME
+        value: PMKK Skill Hub - Ranchi Sector 4
+      - key: LOW_BANDWIDTH_MODE
+        value: "true"
+      - key: PYTHONUNBUFFERED
+        value: "1"
+
+  # 2. Central SMU Executive Dashboard (Next.js 14 App Router + TypeScript)
+  - type: web
+    name: kaushal-smu-dashboard
+    env: node
+    region: oregon
+    plan: free
+    rootDir: frontend
+    buildCommand: "npm install && npm run build"
+    startCommand: "npm run start"
+    healthCheckPath: /
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: EDGE_AGENT_URL
+        fromService:
+          type: web
+          name: kaushal-edge-agent
+          property: host
