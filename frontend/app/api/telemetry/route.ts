@@ -7,6 +7,7 @@ export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const historyRequested = searchParams.get("history") === "true";
   const evaluationRequested = searchParams.get("evaluation") === "true";
+  const camerasRequested = searchParams.get("cameras") === "true";
 
   let edgeInferDur = 14.2;
   let blurDur = 3.1;
@@ -15,7 +16,9 @@ export async function GET(request: NextRequest) {
   let totalDur = 23.6;
 
   try {
-    const endpoint = evaluationRequested
+    const endpoint = camerasRequested
+      ? `${EDGE_AGENT_URL}/api/v1/cameras`
+      : evaluationRequested
       ? `${EDGE_AGENT_URL}/api/v1/evaluation`
       : historyRequested
       ? `${EDGE_AGENT_URL}/api/v1/telemetry/history`

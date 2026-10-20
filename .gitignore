@@ -64,3 +64,5 @@ build/
 *.swo
 .DS_Store
 Thumbs.db
+*.tsbuildinfo
+stitch_screen.html

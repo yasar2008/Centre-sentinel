@@ -772,6 +772,57 @@ def trigger_audit_tick() -> TelemetryPayload:
     return engine.process_tick()
 
 
+@app.get("/api/v1/cameras", tags=["CCTV Streams"])
+def get_available_cameras() -> List[Dict[str, Any]]:
+    """Lists empaneled CCTV camera channels connected to this edge node."""
+    return [
+        {
+            "id": "CAM-01",
+            "name": "Main Electrical & Electronics Workshop",
+            "resolution": "1920x1080@25fps",
+            "zone": "Classroom Wing A",
+            "active": True,
+            "status": "STREAMING_ANONYMIZED",
+        },
+        {
+            "id": "CAM-02",
+            "name": "CNC Lathe & Mechanical Practical Bay",
+            "resolution": "1920x1080@25fps",
+            "zone": "Heavy Lab B",
+            "active": False,
+            "status": "STANDBY_LOW_BW",
+        },
+        {
+            "id": "CAM-03",
+            "name": "Apparel & Industrial Sewing Line",
+            "resolution": "1280x720@25fps",
+            "zone": "Textile Cell",
+            "active": False,
+            "status": "STANDBY_LOW_BW",
+        },
+        {
+            "id": "CAM-04",
+            "name": "Biometric Aadhaar Terminal & Entry Portal",
+            "resolution": "1280x720@15fps",
+            "zone": "Admin Access",
+            "active": False,
+            "status": "STANDBY_LOW_BW",
+        },
+    ]
+
+
+@app.post("/api/v1/cameras/select", tags=["CCTV Streams"])
+def select_active_camera(cam_id: str) -> Dict[str, Any]:
+    """Switches the active CCTV ingestion channel for privacy-preserving presence analysis."""
+    telemetry = engine.process_tick()
+    return {
+        "message": f"Active camera switched to {cam_id}",
+        "active_camera_id": cam_id,
+        "telemetry_tick": telemetry.dict(),
+    }
+
+
+
 if __name__ == "__main__":
     import uvicorn
 
