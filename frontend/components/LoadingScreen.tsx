@@ -54,32 +54,50 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete, forceS
     },
   ];
 
+  const onCompleteRef = React.useRef(onComplete);
+  onCompleteRef.current = onComplete;
+
   useEffect(() => {
     // Check if previously loaded in this session unless forced
-    const hasLoaded = sessionStorage.getItem("ps_portal_loaded");
-    if (hasLoaded && !forceShow) {
-      onComplete();
-      return;
+    try {
+      const hasLoaded = typeof window !== "undefined" ? sessionStorage.getItem("ps_portal_loaded") : null;
+      if (hasLoaded && !forceShow) {
+        onCompleteRef.current();
+        return;
+      }
+    } catch {
+      // Ignore storage access errors in private browsing
     }
+
+    // Fail-safe auto-complete after 2.2 seconds max to prevent any hung screen
+    const safetyTimeout = setTimeout(() => {
+      try {
+        sessionStorage.setItem("ps_portal_loaded", "true");
+      } catch {}
+      onCompleteRef.current();
+    }, 2200);
 
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(interval);
+          clearTimeout(safetyTimeout);
           setIsDone(true);
-          sessionStorage.setItem("ps_portal_loaded", "true");
+          try {
+            sessionStorage.setItem("ps_portal_loaded", "true");
+          } catch {}
           try {
             playSuccessChime();
           } catch {
             // Audio context may require user gesture
           }
           setTimeout(() => {
-            onComplete();
-          }, 800);
+            onCompleteRef.current();
+          }, 400);
           return 100;
         }
 
-        const next = prev + Math.floor(Math.random() * 11) + 6;
+        const next = prev + Math.floor(Math.random() * 15) + 12;
         const capped = Math.min(100, next);
 
         if (capped > 20 && capped <= 40) setCurrentStep(1);
@@ -89,15 +107,22 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete, forceS
 
         return capped;
       });
-    }, 150);
+    }, 120);
 
-    return () => clearInterval(interval);
-  }, [onComplete, forceShow]);
+    return () => {
+      clearInterval(interval);
+      clearTimeout(safetyTimeout);
+    };
+  }, [forceShow]);
 
   const handleSkip = () => {
-    playTacticalClick();
-    sessionStorage.setItem("ps_portal_loaded", "true");
-    onComplete();
+    try {
+      playTacticalClick();
+    } catch {}
+    try {
+      sessionStorage.setItem("ps_portal_loaded", "true");
+    } catch {}
+    onCompleteRef.current();
   };
 
   // Circumference for radial progress ring (r = 44 => C = 2 * PI * 44 ≈ 276.46)

@@ -1,8 +1,8 @@
 {
-  "name": "kaushal-drishti-dashboard",
+  "name": "centre-sentinel-dashboard",
   "version": "1.0.0",
   "private": true,
-  "description": "MSDE Problem ID 26245 - Privacy-Preserving Real-Time Video Analytics Platform",
+  "description": "Centre Sentinel - Privacy-Preserving Real-Time Video Analytics Platform (MSDE Problem ID 26245)",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

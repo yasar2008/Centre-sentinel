@@ -25,8 +25,18 @@ import {
 import { playTacticalClick } from "../components/SoundFx";
 
 export default function GrandMainPage() {
-  const [showLoader, setShowLoader] = useState<boolean>(true);
+  const [showLoader, setShowLoader] = useState<boolean>(false);
   const [forceLoader, setForceLoader] = useState<boolean>(false);
+
+  React.useEffect(() => {
+    try {
+      if (!sessionStorage.getItem("ps_portal_loaded")) {
+        setShowLoader(true);
+      }
+    } catch {
+      // safe fallback
+    }
+  }, []);
 
   const subpages = [
     {
