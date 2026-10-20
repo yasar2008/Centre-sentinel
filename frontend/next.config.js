@@ -1,9 +1,13 @@
+const isGithubPages = process.env.GITHUB_PAGES === "true";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  ...(isGithubPages ? { output: "export", basePath: "/Centre-sentinel" } : {}),
   ...(process.env.DOCKER_BUILD === "1" ? { output: "standalone" } : {}),
   reactStrictMode: true,
   poweredByHeader: false,
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "http",
@@ -16,6 +20,7 @@ const nextConfig = {
     ],
   },
   async headers() {
+    if (isGithubPages) return [];
     return [
       {
         source: "/api/:path*",
