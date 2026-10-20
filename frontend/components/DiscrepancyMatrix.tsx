@@ -1,14 +1,17 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { Download, Search, CheckCircle2, AlertCircle, UserX } from "lucide-react";
+import { Download, Search, CheckCircle2, AlertCircle, UserX, ShieldCheck, Fingerprint } from "lucide-react";
 import { playTacticalClick, playAlertChime } from "./SoundFx";
 
-interface CandidateRecord {
+export interface CandidateRecord {
   id: string;
   name: string;
+  aadhaarMasked: string;
   bench: string;
-  lastSeen: string;
+  tradePack: string;
+  aebasTime: string;
+  lastSeenVision: string;
   confidence: number;
   status: "ACTIVE" | "GHOST" | "PROXY_SPOOF";
   detail: string;
@@ -19,18 +22,150 @@ export const DiscrepancyMatrix: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
 
   const candidates: CandidateRecord[] = [
-    { id: "TR-0841", name: "Aarav Sharma", bench: "Station 01", lastSeen: "13:41:55", confidence: 0.96, status: "ACTIVE", detail: "Hands-on sewing" },
-    { id: "TR-0842", name: "Pooja Verma", bench: "Station 02", lastSeen: "13:42:01", confidence: 0.93, status: "ACTIVE", detail: "Fabric align" },
-    { id: "TR-0843", name: "Rohan Gupta", bench: "Station 04", lastSeen: "09:12:00", confidence: 0.12, status: "GHOST", detail: "Idle 42m, biometric logged" },
-    { id: "TR-0844", name: "Sunita Patel", bench: "Station 07", lastSeen: "09:14:22", confidence: 0.08, status: "GHOST", detail: "Idle 54m, biometric logged" },
-    { id: "TR-0845", name: "Vikas Kumar", bench: "Station 09", lastSeen: "13:42:05", confidence: 0.97, status: "ACTIVE", detail: "Garment hemming" },
-    { id: "TR-0846", name: "Ananya Das", bench: "Station 11", lastSeen: "13:41:48", confidence: 0.92, status: "ACTIVE", detail: "Button hole stitch" },
-    { id: "TR-0847", name: "Deepak Yadav", bench: "Station 12", lastSeen: "13:42:10", confidence: 0.95, status: "ACTIVE", detail: "Fabric ironing" },
-    { id: "TR-0848", name: "Meera Singh", bench: "Station 13", lastSeen: "09:08:14", confidence: 0.11, status: "GHOST", detail: "Unoccupied workbench" },
-    { id: "TR-0849", name: "Kunal Mehra", bench: "Station 14", lastSeen: "09:05:10", confidence: 0.04, status: "PROXY_SPOOF", detail: "AEBAS duplicate auth" },
-    { id: "TR-0850", name: "Priya Nair", bench: "Station 16", lastSeen: "13:41:40", confidence: 0.94, status: "ACTIVE", detail: "Pattern drafting" },
-    { id: "TR-0851", name: "Mohit Chauhan", bench: "Station 18", lastSeen: "08:58:30", confidence: 0.09, status: "GHOST", detail: "Zero motion detected" },
-    { id: "TR-0852", name: "Swati Sengupta", bench: "Station 19", lastSeen: "09:15:00", confidence: 0.07, status: "PROXY_SPOOF", detail: "Geofence mismatch" },
+    {
+      id: "TR-0841",
+      name: "Aarav Sharma",
+      aadhaarMasked: "XXXX-XXXX-4819",
+      bench: "Station 01",
+      tradePack: "AMH/Q0102 (Sewing)",
+      aebasTime: "09:08:12 IST",
+      lastSeenVision: "13:42:15 IST",
+      confidence: 0.96,
+      status: "ACTIVE",
+      detail: "Continuous JUKI DDL-8700 lockstitch operation",
+    },
+    {
+      id: "TR-0842",
+      name: "Pooja Verma",
+      aadhaarMasked: "XXXX-XXXX-9142",
+      bench: "Station 02",
+      tradePack: "AMH/Q0102 (Sewing)",
+      aebasTime: "09:10:04 IST",
+      lastSeenVision: "13:42:20 IST",
+      confidence: 0.94,
+      status: "ACTIVE",
+      detail: "Hemming fabric roll, hands-on IoU 0.91",
+    },
+    {
+      id: "TR-0843",
+      name: "Rohan Gupta",
+      aadhaarMasked: "XXXX-XXXX-2190",
+      bench: "Station 04",
+      tradePack: "AMH/Q0102 (Sewing)",
+      aebasTime: "09:12:44 IST",
+      lastSeenVision: "Unoccupied",
+      confidence: 0.08,
+      status: "GHOST",
+      detail: "AEBAS punch verified at terminal; zero visual presence (Ghost Beneficiary)",
+    },
+    {
+      id: "TR-0844",
+      name: "Sunita Patel",
+      aadhaarMasked: "XXXX-XXXX-6731",
+      bench: "Station 07",
+      tradePack: "AMH/Q0102 (Sewing)",
+      aebasTime: "09:14:22 IST",
+      lastSeenVision: "Unoccupied",
+      confidence: 0.05,
+      status: "GHOST",
+      detail: "Station idle 54m; PFMS DBT stipend tranche flag",
+    },
+    {
+      id: "TR-0845",
+      name: "Vikas Kumar",
+      aadhaarMasked: "XXXX-XXXX-5510",
+      bench: "Station 09",
+      tradePack: "AMH/Q0102 (Sewing)",
+      aebasTime: "09:05:30 IST",
+      lastSeenVision: "13:42:18 IST",
+      confidence: 0.97,
+      status: "ACTIVE",
+      detail: "Overlock machine trimming, IoU 0.95",
+    },
+    {
+      id: "TR-0846",
+      name: "Ananya Das",
+      aadhaarMasked: "XXXX-XXXX-3891",
+      bench: "Station 11",
+      tradePack: "AMH/Q0102 (Sewing)",
+      aebasTime: "09:15:18 IST",
+      lastSeenVision: "13:41:50 IST",
+      confidence: 0.92,
+      status: "ACTIVE",
+      detail: "Buttonhole stitching, IoU 0.89",
+    },
+    {
+      id: "TR-0847",
+      name: "Deepak Yadav",
+      aadhaarMasked: "XXXX-XXXX-7724",
+      bench: "Station 12",
+      tradePack: "AMH/Q0102 (Sewing)",
+      aebasTime: "09:11:02 IST",
+      lastSeenVision: "13:42:05 IST",
+      confidence: 0.95,
+      status: "ACTIVE",
+      detail: "Industrial steam pressing, IoU 0.93",
+    },
+    {
+      id: "TR-0848",
+      name: "Meera Singh",
+      aadhaarMasked: "XXXX-XXXX-1140",
+      bench: "Station 13",
+      tradePack: "AMH/Q0102 (Sewing)",
+      aebasTime: "09:08:14 IST",
+      lastSeenVision: "Unoccupied",
+      confidence: 0.09,
+      status: "GHOST",
+      detail: "Unoccupied workbench during scheduled practical batch",
+    },
+    {
+      id: "TR-0849",
+      name: "Kunal Mehra",
+      aadhaarMasked: "XXXX-XXXX-8205",
+      bench: "Station 14",
+      tradePack: "AMH/Q0102 (Sewing)",
+      aebasTime: "09:05:10 IST",
+      lastSeenVision: "Discrepant",
+      confidence: 0.04,
+      status: "PROXY_SPOOF",
+      detail: "AEBAS duplicate authentication; single person punching 2 IDs",
+    },
+    {
+      id: "TR-0850",
+      name: "Priya Nair",
+      aadhaarMasked: "XXXX-XXXX-6398",
+      bench: "Station 16",
+      tradePack: "AMH/Q0102 (Sewing)",
+      aebasTime: "09:13:40 IST",
+      lastSeenVision: "13:41:40 IST",
+      confidence: 0.94,
+      status: "ACTIVE",
+      detail: "Pattern drafting on cutting table",
+    },
+    {
+      id: "TR-0851",
+      name: "Mohit Chauhan",
+      aadhaarMasked: "XXXX-XXXX-9901",
+      bench: "Station 18",
+      tradePack: "AMH/Q0102 (Sewing)",
+      aebasTime: "08:58:30 IST",
+      lastSeenVision: "Unoccupied",
+      confidence: 0.07,
+      status: "GHOST",
+      detail: "Zero presence in lab across entire 4-hour morning session",
+    },
+    {
+      id: "TR-0852",
+      name: "Swati Sengupta",
+      aadhaarMasked: "XXXX-XXXX-4432",
+      bench: "Station 19",
+      tradePack: "AMH/Q0102 (Sewing)",
+      aebasTime: "09:15:00 IST",
+      lastSeenVision: "Discrepant",
+      confidence: 0.06,
+      status: "PROXY_SPOOF",
+      detail: "Mobile AEBAS device geofence mismatch (>50m off centre premises)",
+    },
   ];
 
   const filteredCandidates = useMemo(() => {
@@ -38,7 +173,8 @@ export const DiscrepancyMatrix: React.FC = () => {
       const matchesSearch =
         c.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
         c.bench.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        c.name.toLowerCase().includes(searchTerm.toLowerCase());
+        c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        c.aadhaarMasked.toLowerCase().includes(searchTerm.toLowerCase());
 
       if (!matchesSearch) return false;
       if (filter === "ACTIVE") return c.status === "ACTIVE";
@@ -50,16 +186,31 @@ export const DiscrepancyMatrix: React.FC = () => {
   const handleExportCsv = () => {
     playAlertChime();
     const rows = [
-      ["Candidate ID", "Trainee Name", "Assigned Bench", "Last Detected (IST)", "AI Confidence", "Audit Status", "Forensic Notes", "Cryptographic Block"],
+      [
+        "Candidate ID",
+        "Trainee Full Name",
+        "Masked Aadhaar VID",
+        "Qualification Pack",
+        "Assigned Workbench",
+        "AEBAS Biometric Punch (IST)",
+        "Vision Last Verified",
+        "YOLO Confidence",
+        "Audit Status",
+        "Forensic Investigation Notes",
+        "SHA-256 Watermark Hash",
+      ],
       ...candidates.map((c) => [
         c.id,
         c.name,
+        c.aadhaarMasked,
+        c.tradePack,
         c.bench,
-        c.lastSeen,
+        c.aebasTime,
+        c.lastSeenVision,
         c.confidence.toString(),
         c.status,
-        c.detail,
-        "SHA256:8f9a2b7c4d5e0f11a6c8e3",
+        `"${c.detail}"`,
+        "SHA256:8f9a2b7c4d5e0f11a6c8e3b4a2e5d8",
       ]),
     ];
 
@@ -67,7 +218,7 @@ export const DiscrepancyMatrix: React.FC = () => {
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `MSDE_Attendance_Audit_${Date.now()}.csv`);
+    link.setAttribute("download", `MSDE_PMKVY_Attendance_Audit_${Date.now()}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -78,29 +229,36 @@ export const DiscrepancyMatrix: React.FC = () => {
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/[0.06]">
         <div>
-          <h3 className="font-semibold text-sm text-white tracking-tight">
-            Attendance Discrepancy Matrix
+          <h3 className="font-semibold text-sm text-white tracking-tight flex items-center gap-2">
+            <Fingerprint className="w-4 h-4 text-sky-400 stroke-[1.5]" />
+            Aadhaar AEBAS vs Vision Discrepancy Matrix
           </h3>
           <p className="text-xs text-slate-400 font-normal">
-            Reconciling Aadhaar AEBAS portal claims against physical AI detection
+            Automated reconciliation: Biometric Portal Records vs Computer Vision Headcount
           </p>
         </div>
         <span className="text-xs font-semibold px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-300">
-          Delta: -6 Phantoms (-21.4%)
+          Delta: -6 Phantom Beneficiaries (-21.4%)
         </span>
       </div>
 
       {/* Side-by-side Comparison Banner */}
       <div className="grid grid-cols-2 gap-3">
         <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.06]">
-          <div className="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Aadhaar AEBAS Claim</div>
-          <div className="text-xl font-semibold tracking-tight text-white mt-1">28 Claimed</div>
-          <div className="text-[11px] text-slate-500 mt-0.5">Biometric Terminal Ingress</div>
+          <div className="text-[11px] font-medium text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+            <Fingerprint className="w-3.5 h-3.5 text-slate-400" />
+            AEBAS Biometric Claim
+          </div>
+          <div className="text-xl font-semibold tracking-tight text-white mt-1">28 Punched In</div>
+          <div className="text-[11px] text-slate-500 mt-0.5">Terminal ID: UIDAI-VNS-0492</div>
         </div>
         <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.06]">
-          <div className="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Vision Headcount</div>
-          <div className="text-xl font-semibold tracking-tight text-emerald-400 mt-1">22 Active</div>
-          <div className="text-[11px] text-emerald-500/80 mt-0.5">Continuous YOLOv8 IoU</div>
+          <div className="text-[11px] font-medium text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+            Physical Vision Headcount
+          </div>
+          <div className="text-xl font-semibold tracking-tight text-emerald-400 mt-1">22 Present</div>
+          <div className="text-[11px] text-emerald-500/80 mt-0.5">Continuous YOLOv8 Tracking</div>
         </div>
       </div>
 
@@ -116,7 +274,7 @@ export const DiscrepancyMatrix: React.FC = () => {
               filter === "ALL" ? "bg-white/[0.1] text-white shadow-sm" : "text-slate-400 hover:text-white"
             }`}
           >
-            All (28)
+            All Candidates (28)
           </button>
           <button
             onClick={() => {
@@ -127,7 +285,7 @@ export const DiscrepancyMatrix: React.FC = () => {
               filter === "ACTIVE" ? "bg-white/[0.1] text-emerald-400 shadow-sm" : "text-slate-400 hover:text-white"
             }`}
           >
-            Active (22)
+            Physically Active (22)
           </button>
           <button
             onClick={() => {
@@ -138,96 +296,92 @@ export const DiscrepancyMatrix: React.FC = () => {
               filter === "DISCREPANT" ? "bg-white/[0.1] text-amber-400 shadow-sm" : "text-slate-400 hover:text-white"
             }`}
           >
-            Discrepant (6)
+            Discrepant / Ghost (6)
           </button>
         </div>
 
-        {/* Search */}
-        <div className="relative">
-          <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-slate-400" />
-          <input
-            type="text"
-            placeholder="Search candidate or bench..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-8 pr-3 py-1.5 bg-white/[0.03] border border-white/[0.08] rounded-full text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-white/[0.2] transition-colors w-48"
-          />
-        </div>
-      </div>
-
-      {/* Candidate Table */}
-      <div className="overflow-x-auto max-h-60 rounded-xl border border-white/[0.06]">
-        <table className="w-full text-left text-xs border-collapse">
-          <thead className="sticky top-0 bg-[#0d1322] border-b border-white/[0.06] text-slate-400 text-[11px] font-medium">
-            <tr>
-              <th className="p-2.5">Candidate ID</th>
-              <th className="p-2.5">Workstation</th>
-              <th className="p-2.5">Last Detected</th>
-              <th className="p-2.5">Confidence</th>
-              <th className="p-2.5">Status</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-white/[0.04]">
-            {filteredCandidates.map((c) => {
-              const isGhost = c.status === "GHOST";
-              const isSpoof = c.status === "PROXY_SPOOF";
-
-              return (
-                <tr
-                  key={c.id}
-                  className={`transition-colors duration-150 ${
-                    isGhost || isSpoof
-                      ? "bg-amber-500/[0.03] hover:bg-amber-500/[0.06]"
-                      : "hover:bg-white/[0.02]"
-                  }`}
-                >
-                  <td className="p-2.5">
-                    <span className="font-semibold text-white">{c.id}</span>
-                    <div className="text-[11px] text-slate-400">{c.name}</div>
-                  </td>
-                  <td className="p-2.5 text-slate-300">{c.bench}</td>
-                  <td className="p-2.5 font-mono text-[11px] text-slate-400">{c.lastSeen}</td>
-                  <td className="p-2.5 font-mono text-[11px]">
-                    <span className={c.confidence > 0.8 ? "text-emerald-400" : "text-amber-400"}>
-                      {(c.confidence * 100).toFixed(0)}%
-                    </span>
-                  </td>
-                  <td className="p-2.5">
-                    {c.status === "ACTIVE" && (
-                      <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[11px] font-medium">
-                        Active
-                      </span>
-                    )}
-                    {c.status === "GHOST" && (
-                      <span className="px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/20 text-[11px] font-medium flex items-center gap-1 w-fit">
-                        <UserX className="w-3 h-3" />
-                        Ghost (-42m)
-                      </span>
-                    )}
-                    {c.status === "PROXY_SPOOF" && (
-                      <span className="px-2.5 py-0.5 rounded-full bg-rose-500/10 text-rose-300 border border-rose-500/20 text-[11px] font-medium flex items-center gap-1 w-fit">
-                        <AlertCircle className="w-3 h-3" />
-                        Proxy Spoof
-                      </span>
-                    )}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Footer */}
-      <div className="pt-2 flex justify-between items-center text-xs text-slate-400">
-        <span>Showing {filteredCandidates.length} of {candidates.length} candidate records</span>
         <button
           onClick={handleExportCsv}
-          className="text-sky-400 hover:text-sky-300 font-medium flex items-center gap-1.5 transition-colors"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] text-xs font-medium text-slate-200 transition-colors"
         >
-          <Download className="w-3.5 h-3.5" />
-          Export Sealed CSV [SHA-256]
+          <Download className="w-3.5 h-3.5 text-slate-400" />
+          Export Audit CSV
         </button>
+      </div>
+
+      {/* Search Input */}
+      <div className="relative">
+        <Search className="w-3.5 h-3.5 absolute left-3.5 top-2.5 text-slate-400" />
+        <input
+          type="text"
+          placeholder="Filter candidate by Name, ID, or Aadhaar VID..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full pl-9 pr-4 py-1.5 bg-white/[0.02] border border-white/[0.08] rounded-xl text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-white/[0.2] transition-colors"
+        />
+      </div>
+
+      {/* Candidates Audit Table */}
+      <div className="border border-white/[0.06] rounded-xl overflow-hidden bg-white/[0.01]">
+        <div className="max-h-64 overflow-y-auto divide-y divide-white/[0.04]">
+          {filteredCandidates.map((c) => {
+            const isDiscrepant = c.status === "GHOST" || c.status === "PROXY_SPOOF";
+            return (
+              <div
+                key={c.id}
+                className={`p-3 transition-colors text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
+                  isDiscrepant ? "bg-amber-500/[0.03] hover:bg-amber-500/[0.06]" : "hover:bg-white/[0.02]"
+                }`}
+              >
+                {/* Candidate Info */}
+                <div className="flex items-center gap-3">
+                  <div className="w-7 h-7 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center font-mono text-[10px] text-slate-300 font-semibold">
+                    {c.id.split("-")[1]}
+                  </div>
+                  <div>
+                    <div className="font-semibold text-white flex items-center gap-2">
+                      {c.name}
+                      <span className="font-mono text-[10px] text-slate-500 font-normal">
+                        {c.aadhaarMasked}
+                      </span>
+                    </div>
+                    <div className="text-[11px] text-slate-400 flex items-center gap-2 mt-0.5">
+                      <span>{c.bench}</span>
+                      <span className="text-slate-600">•</span>
+                      <span className="text-slate-500">{c.tradePack}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Status & Timestamps */}
+                <div className="flex items-center gap-3 self-end sm:self-center">
+                  <div className="text-right text-[11px]">
+                    <div className="text-slate-300 font-mono">AEBAS: {c.aebasTime}</div>
+                    <div className="text-slate-500 font-mono text-[10px]">Vision: {c.lastSeenVision}</div>
+                  </div>
+
+                  {c.status === "ACTIVE" && (
+                    <span className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-medium text-[10px]">
+                      <CheckCircle2 className="w-3 h-3" /> Active
+                    </span>
+                  )}
+
+                  {c.status === "GHOST" && (
+                    <span className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-300 font-medium text-[10px]">
+                      <UserX className="w-3 h-3" /> Ghost
+                    </span>
+                  )}
+
+                  {c.status === "PROXY_SPOOF" && (
+                    <span className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-400 font-medium text-[10px]">
+                      <AlertCircle className="w-3 h-3" /> Proxy
+                    </span>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
