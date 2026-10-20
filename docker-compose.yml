@@ -1,0 +1,65 @@
+version: "3.8"
+
+services:
+  edge-agent:
+    build:
+      context: ./edge-agent
+      dockerfile: Dockerfile
+    container_name: kaushal-edge-agent
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - EDGE_NODE_ID=EDGE-NODE-MSDE-042
+      - CENTRE_ID=TC-JH-RNC-081
+      - CENTRE_NAME=PMKK Skill Hub - Ranchi Sector 4
+      - LOW_BANDWIDTH_MODE=true
+      - PYTHONUNBUFFERED=1
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - kaushal-net
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 2048M
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: kaushal-smu-dashboard
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+      - EDGE_AGENT_URL=http://edge-agent:8000
+      - NEXT_PUBLIC_SITE_URL=http://localhost:3000
+    depends_on:
+      edge-agent:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/"]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    networks:
+      - kaushal-net
+    deploy:
+      resources:
+        limits:
+          cpus: "1.5"
+          memory: 1024M
+
+networks:
+  kaushal-net:
+    driver: bridge
