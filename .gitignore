@@ -66,3 +66,7 @@ build/
 Thumbs.db
 *.tsbuildinfo
 stitch_screen.html
+scratch_*
+test.*
+frontend/public/videos/test.*
+slide_previews/

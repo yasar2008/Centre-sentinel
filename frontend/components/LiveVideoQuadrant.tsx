@@ -309,6 +309,38 @@ export const LiveVideoQuadrant: React.FC = () => {
           drawCleanPersonBox(ctx, cw * 0.42 - 50, ch * 0.30, 100, 150, "Trainee Detected", "Recorded Video", "#2563eb");
         }
 
+        // Draw Specialized Trade Sensor HUD Reticle
+        ctx.save();
+        if (sourceMode === "CHANNELS") {
+          if (selectedCamId === "CAM-01") {
+            ctx.fillStyle = "rgba(56, 189, 248, 0.9)";
+            ctx.font = "bold 9px monospace";
+            ctx.fillText("JUKI NEEDLE: 3,200 SPM • THREAD TENSION: 2.4N", 14, ch - 54);
+          } else if (selectedCamId === "CAM-02") {
+            ctx.fillStyle = "rgba(34, 211, 238, 0.9)";
+            ctx.font = "bold 9px monospace";
+            ctx.fillText("CNC SPINDLE: 12,400 RPM • COOLANT: 4.8 BAR [SAFE]", 14, ch - 54);
+          } else if (selectedCamId === "CAM-03") {
+            ctx.fillStyle = "rgba(16, 185, 129, 0.9)";
+            ctx.font = "bold 9px monospace";
+            ctx.fillText("SMT SOLDERING TEMP: 352°C • ESD: VERIFIED OK", 14, ch - 54);
+          } else if (selectedCamId === "CAM-04") {
+            ctx.fillStyle = "rgba(129, 140, 248, 0.9)";
+            ctx.font = "bold 9px monospace";
+            ctx.fillText("LAB TERMINAL LAN: 100 Mbps • ACTIVE STATIONS: 18/24", 14, ch - 54);
+          }
+        }
+
+        // Draw Running Real-time Millisecond Timecode
+        const now = new Date();
+        const timeStr = `${now.toISOString().replace("T", " ").substring(0, 19)}.${String(now.getMilliseconds()).padStart(3, "0")}`;
+        ctx.fillStyle = "rgba(255, 255, 255, 0.75)";
+        ctx.font = "8.5px monospace";
+        ctx.textAlign = "right";
+        ctx.fillText(timeStr, cw - 14, ch - 54);
+        ctx.textAlign = "left";
+        ctx.restore();
+
         ctx.restore();
       }
 
@@ -318,6 +350,15 @@ export const LiveVideoQuadrant: React.FC = () => {
     animId = requestAnimationFrame(renderOverlay);
     return () => cancelAnimationFrame(animId);
   }, [showBlur, showOverlays, sourceMode, selectedCamId]);
+
+  const getCameraFilter = () => {
+    if (sourceMode !== "CHANNELS") return "none";
+    if (selectedCamId === "CAM-01") return "contrast(1.08) brightness(1.02) saturate(1.1)";
+    if (selectedCamId === "CAM-02") return "hue-rotate(185deg) contrast(1.15) brightness(0.95)";
+    if (selectedCamId === "CAM-03") return "brightness(1.06) contrast(1.12) saturate(1.15)";
+    if (selectedCamId === "CAM-04") return "sepia(0.12) contrast(1.1) brightness(1.04)";
+    return "none";
+  };
 
   // Clean Human Person Bounding Box (No corner targeting brackets)
   function drawCleanPersonBox(
@@ -569,7 +610,8 @@ export const LiveVideoQuadrant: React.FC = () => {
           loop
           muted
           playsInline
-          className="w-full h-full object-cover select-none pointer-events-none"
+          style={{ filter: getCameraFilter() }}
+          className="w-full h-full object-cover select-none pointer-events-none transition-all duration-300"
         />
 
         <canvas

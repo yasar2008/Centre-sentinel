@@ -89,3 +89,28 @@ export function playNoticeFreezeSound() {
   osc.start();
   osc.stop(ctx.currentTime + 0.35);
 }
+
+export function playSuccessChime() {
+  if (!soundEnabled) return;
+  const ctx = getAudioContext();
+  if (!ctx) return;
+
+  const now = ctx.currentTime;
+  const chord = [523.25, 659.25, 783.99, 1046.5]; // C Major arpeggio
+  chord.forEach((freq, idx) => {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(freq, now + idx * 0.06);
+
+    gain.gain.setValueAtTime(0.09, now + idx * 0.06);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.06 + 0.4);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start(now + idx * 0.06);
+    osc.stop(now + idx * 0.06 + 0.4);
+  });
+}
