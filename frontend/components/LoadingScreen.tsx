@@ -152,7 +152,7 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete, forceS
               सत्यमेव जयते • Government of India
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight mt-2 flex items-center justify-center gap-2">
-              <span>SKILLWATCH</span>
+              <span>CENTRE SENTINEL</span>
               <span className="text-xs font-bold text-emerald-400 px-2 py-0.5 rounded-md bg-emerald-950/80 border border-emerald-700/50">
                 PRO v2.6
               </span>

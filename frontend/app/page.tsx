@@ -176,7 +176,7 @@ export default function GrandMainPage() {
 
             <div className="space-y-3">
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-tight">
-                SKILLWATCH
+                CENTRE SENTINEL
               </h1>
               <div className="text-lg sm:text-xl font-bold text-blue-800">
                 National Skill Training Surveillance &amp; Attendance Verification Portal
@@ -424,7 +424,7 @@ export default function GrandMainPage() {
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
           <div className="space-y-1">
             <div className="font-bold text-slate-800">
-              SkillWatch • Scheme Monitoring Unit (SMU)
+              Centre Sentinel • Scheme Monitoring Unit (SMU)
             </div>
             <div>
               Ministry of Skill Development and Entrepreneurship, Government of India

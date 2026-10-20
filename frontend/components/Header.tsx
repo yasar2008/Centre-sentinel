@@ -87,7 +87,7 @@ export const Header: React.FC<HeaderProps> = ({
           <div>
             <div className="flex items-center gap-2">
               <span className="font-extrabold text-base tracking-tight text-slate-900 group-hover:text-blue-700 transition-colors">
-                SKILLWATCH
+                CENTRE SENTINEL
               </span>
               <span className="text-[10px] font-bold text-blue-800 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
                 MSDE ID 26245

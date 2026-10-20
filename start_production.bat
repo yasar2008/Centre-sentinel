@@ -1,7 +1,7 @@
 @echo off
-TITLE Kaushal-Drishti / SkillWatch - Production Services Runner
+TITLE Kaushal-Drishti / Centre Sentinel - Production Services Runner
 echo =====================================================================
-echo    KAUSHAL-DRISHTI / SKILLWATCH (MSDE Problem ID 26245)
+echo    KAUSHAL-DRISHTI / CENTRE SENTINEL (MSDE Problem ID 26245)
 echo    Starting Multi-Tier Production Environment
 echo =====================================================================
 echo.

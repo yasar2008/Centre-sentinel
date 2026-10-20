@@ -1,4 +1,4 @@
-# Kaushal-Drishti / SkillWatch — Production Cloud Deployment Guide
+# Kaushal-Drishti / Centre Sentinel — Production Cloud Deployment Guide
 ### Ministry of Skill Development and Entrepreneurship (MSDE Problem ID 26245)
 
 This guide covers deploying the **Kaushal-Drishti (कौशल-दृष्टि)** platform to production cloud infrastructure.
