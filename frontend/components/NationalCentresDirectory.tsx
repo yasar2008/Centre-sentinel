@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { Search, Building2, MapPin, CheckCircle, AlertTriangle, AlertOctagon, ChevronRight, Filter } from "lucide-react";
+import { Search, Building2, MapPin } from "lucide-react";
 import { playTacticalClick } from "./SoundFx";
 
 export interface CentreItem {
@@ -62,55 +62,55 @@ export const NationalCentresDirectory: React.FC<NationalCentresDirectoryProps> =
   }, [centres, searchTerm, selectedState, selectedStatus]);
 
   return (
-    <div className="bg-surface-container-low border border-outline-variant p-4 hud-bracket space-y-4">
+    <div className="luxury-card p-6 space-y-5">
       {/* Header */}
-      <div className="flex flex-wrap justify-between items-center border-b border-outline-variant pb-2 gap-2">
+      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/[0.06]">
         <div>
-          <h3 className="font-bold text-base text-primary flex items-center gap-2">
-            <Building2 className="w-4 h-4 text-primary" />
-            National Training Centres Audit Directory
+          <h3 className="font-semibold text-base text-white tracking-tight flex items-center gap-2">
+            <Building2 className="w-4 h-4 text-sky-400 stroke-[1.5]" />
+            National Training Centres Audit Registry
           </h3>
-          <p className="font-mono text-xs text-on-surface-variant">
+          <p className="text-xs text-slate-400 font-normal">
             Surveillance registry across 15,000+ PMKK, KVK, JSS, and NSDC empaneled facilities
           </p>
         </div>
-        <div className="font-mono text-xs text-outline">
-          {filteredCentres.length} of {centres.length} Centres Filtered
+        <div className="text-xs text-slate-500 font-medium">
+          {filteredCentres.length} of {centres.length} facilities active
         </div>
       </div>
 
-      {/* Filter and Search Toolbar */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5">
-        {/* Search Input */}
+      {/* Filter and Search Bar */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        {/* Search */}
         <div className="relative">
-          <Search className="w-4 h-4 absolute left-2.5 top-2.5 text-outline" />
+          <Search className="w-3.5 h-3.5 absolute left-3.5 top-3 text-slate-400" />
           <input
             type="text"
-            placeholder="Search Centre ID, City, or Name..."
+            placeholder="Search facility by ID, city, or name..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-8 pr-3 py-1.5 bg-surface-container border border-outline-variant font-mono text-xs text-on-surface placeholder:text-outline/60 focus:border-primary focus:outline-none"
+            className="w-full pl-9 pr-4 py-2 bg-white/[0.02] border border-white/[0.08] rounded-xl text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-white/[0.2] transition-colors"
           />
         </div>
 
-        {/* State Filter */}
+        {/* State select */}
         <select
           value={selectedState}
           onChange={(e) => {
             playTacticalClick();
             setSelectedState(e.target.value);
           }}
-          className="bg-surface-container border border-outline-variant px-3 py-1.5 font-mono text-xs text-on-surface focus:border-primary focus:outline-none cursor-pointer"
+          className="bg-[#0c1220] border border-white/[0.08] px-3.5 py-2 rounded-xl text-xs text-slate-200 focus:outline-none focus:border-white/[0.2] cursor-pointer"
         >
           {states.map((st) => (
-            <option key={st} value={st} className="bg-surface-container-lowest">
+            <option key={st} value={st}>
               State: {st}
             </option>
           ))}
         </select>
 
-        {/* Status Filter */}
-        <div className="flex gap-1 font-mono text-[10px]">
+        {/* Status buttons */}
+        <div className="flex gap-1.5 p-1 bg-white/[0.02] border border-white/[0.06] rounded-xl text-xs">
           {["ALL", "COMPLIANT", "WARNING", "CRITICAL"].map((st) => (
             <button
               key={st}
@@ -118,10 +118,10 @@ export const NationalCentresDirectory: React.FC<NationalCentresDirectoryProps> =
                 playTacticalClick();
                 setSelectedStatus(st);
               }}
-              className={`flex-1 py-1 border transition-colors ${
+              className={`flex-1 py-1 rounded-lg text-xs font-medium transition-all ${
                 selectedStatus === st
-                  ? "bg-primary/20 border-primary text-primary font-bold"
-                  : "border-outline-variant text-outline hover:text-on-surface"
+                  ? "bg-white/[0.1] text-white shadow-sm"
+                  : "text-slate-400 hover:text-white"
               }`}
             >
               {st}
@@ -130,8 +130,8 @@ export const NationalCentresDirectory: React.FC<NationalCentresDirectoryProps> =
         </div>
       </div>
 
-      {/* Directory Grid of Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+      {/* Centres Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
         {filteredCentres.map((c) => {
           const isSelected = selectedCentreId === c.id;
           const isCritical = c.status === "CRITICAL";
@@ -144,58 +144,59 @@ export const NationalCentresDirectory: React.FC<NationalCentresDirectoryProps> =
                 playTacticalClick();
                 onSelectCentre(c);
               }}
-              className={`p-3 border transition-all cursor-pointer relative hud-bracket ${
+              className={`p-4 rounded-xl border transition-all duration-200 cursor-pointer ${
                 isSelected
-                  ? "bg-surface-container-high border-2 border-primary shadow-md"
-                  : "bg-surface-container border-outline-variant hover:border-outline"
+                  ? "bg-white/[0.08] border-white/[0.2] shadow-md"
+                  : "bg-white/[0.02] border-white/[0.06] hover:bg-white/[0.04] hover:border-white/[0.12]"
               }`}
             >
-              <div className="flex justify-between items-start mb-1.5">
-                <span className="font-mono text-xs font-bold text-primary">{c.id}</span>
+              <div className="flex justify-between items-start mb-2">
+                <span className="font-semibold text-xs text-white">{c.id}</span>
                 <span
-                  className={`font-mono text-[9px] px-1.5 py-0.5 border font-bold ${
+                  className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${
                     isCritical
-                      ? "bg-error/20 border-error text-error"
+                      ? "bg-rose-500/10 border-rose-500/20 text-rose-400"
                       : isWarning
-                      ? "bg-secondary/20 border-secondary text-secondary"
-                      : "bg-tertiary/20 border-tertiary text-tertiary"
+                      ? "bg-amber-500/10 border-amber-500/20 text-amber-300"
+                      : "bg-emerald-500/10 border-emerald-500/20 text-emerald-400"
                   }`}
                 >
                   {c.status}
                 </span>
               </div>
 
-              <h4 className="font-sans font-semibold text-xs text-on-surface line-clamp-1 mb-1">
+              <h4 className="font-medium text-xs text-slate-200 line-clamp-1 mb-1">
                 {c.name}
               </h4>
 
-              <div className="flex items-center gap-1.5 font-mono text-[10px] text-on-surface-variant mb-2">
-                <MapPin className="w-3 h-3 text-outline" />
+              <div className="flex items-center gap-1.5 text-[11px] text-slate-400 mb-3">
+                <MapPin className="w-3 h-3 text-slate-500" />
                 <span>{c.district}, {c.state}</span>
-                <span className="border border-outline-variant px-1 text-[8px]">{c.scheme}</span>
+                <span className="text-slate-600">•</span>
+                <span className="text-slate-400">{c.scheme}</span>
               </div>
 
-              {/* Mini Stats Bar */}
-              <div className="grid grid-cols-3 gap-1 pt-2 border-t border-outline-variant/60 font-mono text-[9px] text-center">
-                <div className="p-1 bg-surface-container-low">
-                  <div className="text-outline">CLAIM</div>
-                  <div className="text-primary font-bold">{c.claimed}</div>
+              {/* Minimal Metrics Strip */}
+              <div className="grid grid-cols-3 gap-1.5 pt-2.5 border-t border-white/[0.06] text-center text-xs">
+                <div className="p-1.5 rounded-lg bg-white/[0.02]">
+                  <div className="text-[10px] text-slate-500">Claim</div>
+                  <div className="text-white font-medium">{c.claimed}</div>
                 </div>
-                <div className="p-1 bg-surface-container-low">
-                  <div className="text-outline">VISION</div>
-                  <div className="text-tertiary font-bold">{c.detected}</div>
+                <div className="p-1.5 rounded-lg bg-white/[0.02]">
+                  <div className="text-[10px] text-slate-500">Vision</div>
+                  <div className="text-emerald-400 font-medium">{c.detected}</div>
                 </div>
-                <div className="p-1 bg-surface-container-low">
-                  <div className="text-outline">OCI</div>
-                  <div className={c.oci >= 80 ? "text-tertiary font-bold" : "text-error font-bold"}>
+                <div className="p-1.5 rounded-lg bg-white/[0.02]">
+                  <div className="text-[10px] text-slate-500">OCI</div>
+                  <div className={c.oci >= 80 ? "text-emerald-400 font-medium" : "text-rose-400 font-medium"}>
                     {c.oci}%
                   </div>
                 </div>
               </div>
 
               {isCritical && (
-                <div className="mt-2 text-[9px] font-mono text-error font-bold flex justify-between items-center">
-                  <span>Sec 12-A Frozen:</span>
+                <div className="mt-2 text-[11px] font-medium text-rose-400 flex justify-between items-center">
+                  <span>Sec 12-A Withhold:</span>
                   <span>₹{c.penalty.toLocaleString("en-IN")}</span>
                 </div>
               )}

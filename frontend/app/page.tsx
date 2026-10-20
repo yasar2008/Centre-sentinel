@@ -75,8 +75,8 @@ export default function MissionControlDashboard() {
       const next = !prev;
       setNotification(
         next
-          ? "CRITICAL ALERT: PFMS DIRECT BENEFIT TRANSFER TRANCHE FROZEN UNDER SECTION 12-A"
-          : "PFMS DBT TRANCHE RESUMED"
+          ? "PFMS Direct Benefit Transfer tranche frozen under Section 12-A compliance order"
+          : "PFMS Direct Benefit Transfer tranche resumed"
       );
       setTimeout(() => setNotification(null), 5000);
       return next;
@@ -92,7 +92,7 @@ export default function MissionControlDashboard() {
       oci: c.oci,
       frozenAmount: c.penalty || 184000,
     });
-    setNotification(`MISSION CONTROL FOCUS SHIFTED TO: ${c.id} (${c.district}, ${c.state})`);
+    setNotification(`Monitoring focus switched to: ${c.id} (${c.name})`);
     setTimeout(() => setNotification(null), 4000);
     setActiveTab("cockpit");
   };
@@ -100,8 +100,8 @@ export default function MissionControlDashboard() {
   const ghostCount = Math.max(0, currentCentre.claimed - currentCentre.detected);
 
   return (
-    <div className="bg-surface-container-lowest text-on-surface min-h-screen flex flex-col tactical-grid selection:bg-primary selection:text-on-primary overflow-x-hidden">
-      {/* 1. Top Executive Tactical Header */}
+    <div className="bg-[#080c14] text-slate-100 min-h-screen flex flex-col selection:bg-sky-500 selection:text-black overflow-x-hidden font-sans">
+      {/* 1. Executive Minimalist Header */}
       <Header
         activeTab={activeTab}
         setActiveTab={setActiveTab}
@@ -114,17 +114,17 @@ export default function MissionControlDashboard() {
         freezeActive={isFrozen}
       />
 
-      {/* Global Alert Notification Banner */}
+      {/* Global Minimal Notification Banner */}
       {notification && (
-        <div className="w-full bg-red-950/90 border-y border-red-500 py-1.5 px-4 text-center font-mono text-xs text-red-200 font-bold tracking-wider animate-in fade-in duration-150 flex items-center justify-center gap-2">
-          <span className="w-2 h-2 bg-red-500 rounded-none animate-ping"></span>
+        <div className="w-full bg-rose-500/[0.08] border-b border-rose-500/20 py-2 px-6 text-center text-xs text-rose-300 font-medium tracking-wide animate-in fade-in duration-200 flex items-center justify-center gap-2">
+          <span className="w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse"></span>
           <span>{notification}</span>
         </div>
       )}
 
-      {/* 2. Main Operational Viewport: Docked Sidebar + Fluid Command Canvas */}
+      {/* 2. Main Executive Workspace: Sidebar + Command Surface */}
       <div className="flex-1 flex w-full relative">
-        {/* Docked Sidebar */}
+        {/* Sleek Docked Sidebar */}
         <Sidebar
           activeTab={activeTab}
           setActiveTab={setActiveTab}
@@ -134,9 +134,9 @@ export default function MissionControlDashboard() {
           }}
         />
 
-        {/* Dynamic Command Canvas */}
-        <main className="flex-1 p-2 sm:p-4 space-y-4 max-w-full overflow-hidden">
-          {/* Sovereign Metric Ribbon (Always visible in cockpit) */}
+        {/* Dynamic Executive Surface */}
+        <main className="flex-1 p-5 sm:p-7 space-y-6 max-w-full overflow-hidden">
+          {/* Executive Metric Ribbon (Visible in overview) */}
           <MetricRibbon
             centreId={currentCentre.id}
             centreName={currentCentre.name}
@@ -147,13 +147,13 @@ export default function MissionControlDashboard() {
             frozenAmount={isFrozen ? currentCentre.frozenAmount : currentCentre.frozenAmount}
           />
 
-          {/* Conditional View Router */}
+          {/* View Router */}
           {activeTab === "cockpit" && (
-            <div className="space-y-4 animate-in fade-in duration-150">
-              {/* Main Surveillance & Triage Cockpit Grid (7 cols left, 5 cols right) */}
-              <section className="grid grid-cols-1 xl:grid-cols-12 gap-4">
-                {/* Left & Center: Live CCTV with HUD + Equipment Operability */}
-                <div className="xl:col-span-7 space-y-4">
+            <div className="space-y-6 animate-in fade-in duration-200">
+              {/* Surveillance & Compliance Split Grid (7 cols left, 5 cols right) */}
+              <section className="grid grid-cols-1 xl:grid-cols-12 gap-6">
+                {/* Left Column: Live Feed + Operability */}
+                <div className="xl:col-span-7 space-y-6">
                   <LiveVideoQuadrant />
                   <OperabilityGauge
                     initialOci={currentCentre.oci}
@@ -163,8 +163,8 @@ export default function MissionControlDashboard() {
                   />
                 </div>
 
-                {/* Right: Attendance Discrepancy Matrix + Section 12-A + Low-BW Monitor */}
-                <div className="xl:col-span-5 space-y-4">
+                {/* Right Column: Attendance Matrix + Section 12-A + Low-BW */}
+                <div className="xl:col-span-5 space-y-6">
                   <DiscrepancyMatrix />
                   <Section12ANotice
                     frozenAmount={currentCentre.frozenAmount}
@@ -185,44 +185,49 @@ export default function MissionControlDashboard() {
                 </div>
               </section>
 
-              {/* 24-Hour Continuous Discrepancy & OCI Trend Strip */}
-              <section className="bg-surface-container-low border border-outline-variant p-3.5 hud-bracket">
-                <div className="flex flex-wrap items-center justify-between gap-2 pb-2 mb-2 border-b border-outline-variant/60">
-                  <div className="flex items-center gap-3">
-                    <span className="font-bold text-sm text-on-surface">
-                      24-Hour Continuous Discrepancy &amp; OCI Trend
-                    </span>
-                    <span className="font-mono text-[10px] text-outline uppercase">
-                      [POLLING INTERVAL: 60s • SEC-HASH: 8F9A2B]
-                    </span>
+              {/* 24-Hour Continuous Telemetry Trend Strip (Luxury Minimalist Edition) */}
+              <section className="luxury-card p-5 space-y-4">
+                <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/[0.06]">
+                  <div>
+                    <h3 className="font-semibold text-sm text-white tracking-tight">
+                      24-Hour Continuous Telemetry &amp; OCI Trend
+                    </h3>
+                    <p className="text-xs text-slate-400 font-normal">
+                      Reconciled optical detection vs biometric claimed headcount over rolling 24-hour window
+                    </p>
                   </div>
-                  <div className="flex items-center gap-4 text-[11px] font-mono">
-                    <span className="flex items-center gap-1.5 text-primary">
-                      <span className="w-2.5 h-0.5 bg-primary inline-block"></span> Vision Headcount
+                  <div className="flex items-center gap-5 text-xs text-slate-400">
+                    <span className="flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-sky-400"></span> Vision Headcount
                     </span>
-                    <span className="flex items-center gap-1.5 text-outline">
-                      <span className="w-2.5 h-0.5 bg-outline inline-block"></span> Claimed Biometric
+                    <span className="flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-slate-500"></span> Claimed Biometric
                     </span>
-                    <span className="flex items-center gap-1.5 text-secondary">
-                      <span className="w-2.5 h-0.5 bg-secondary inline-block"></span> OCI Operability %
+                    <span className="flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-amber-400"></span> OCI Util %
                     </span>
                   </div>
                 </div>
 
-                {/* Tactical SVG Telemetry Graph */}
-                <div className="w-full h-24 bg-surface-container-lowest border border-outline-variant/40 relative overflow-hidden flex items-end">
+                {/* Elegant SVG Chart */}
+                <div className="w-full h-28 rounded-xl bg-white/[0.01] border border-white/[0.04] relative overflow-hidden flex items-end p-2">
                   <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 1000 100">
-                    <line stroke="#1e293b" strokeDasharray="4,4" strokeWidth="0.8" x1="0" x2="1000" y1="25" y2="25"></line>
-                    <line stroke="#1e293b" strokeDasharray="4,4" strokeWidth="0.8" x1="0" x2="1000" y1="50" y2="50"></line>
-                    <line stroke="#1e293b" strokeDasharray="4,4" strokeWidth="0.8" x1="0" x2="1000" y1="75" y2="75"></line>
-                    {/* Portal Claim Line (Dotted Gray) */}
-                    <path d="M 0,30 L 100,30 L 250,28 L 400,28 L 600,28 L 800,28 L 1000,28" fill="none" stroke="#88929b" strokeDasharray="6,3" strokeWidth="1.5"></path>
-                    {/* OCI Operability (Amber) */}
-                    <path d="M 0,80 L 120,65 L 250,55 L 420,48 L 550,52 L 720,45 L 850,50 L 1000,52" fill="none" stroke="#ffb77a" strokeWidth="1.8"></path>
-                    {/* Vision Detected Headcount Line (Cyan Glow) */}
-                    <path d="M 0,85 L 120,50 L 250,38 L 420,42 L 550,45 L 720,48 L 850,50 L 1000,50" fill="none" stroke="#89ceff" strokeWidth="2.2"></path>
-                    {/* Discrepancy Highlight Area */}
-                    <polygon fill="rgba(255, 153, 51, 0.12)" points="720,28 1000,28 1000,50 720,48"></polygon>
+                    {/* Subtle Gridlines */}
+                    <line stroke="rgba(255,255,255,0.04)" strokeDasharray="3,3" strokeWidth="1" x1="0" x2="1000" y1="25" y2="25"></line>
+                    <line stroke="rgba(255,255,255,0.04)" strokeDasharray="3,3" strokeWidth="1" x1="0" x2="1000" y1="50" y2="50"></line>
+                    <line stroke="rgba(255,255,255,0.04)" strokeDasharray="3,3" strokeWidth="1" x1="0" x2="1000" y1="75" y2="75"></line>
+                    
+                    {/* Portal Claim Line (Dotted Slate) */}
+                    <path d="M 0,30 L 120,30 L 250,28 L 420,28 L 600,28 L 800,28 L 1000,28" fill="none" stroke="rgba(148,163,184,0.4)" strokeDasharray="5,4" strokeWidth="1.5"></path>
+                    
+                    {/* OCI Operability (Champagne Amber) */}
+                    <path d="M 0,75 L 120,62 L 250,55 L 420,48 L 550,52 L 720,45 L 850,50 L 1000,52" fill="none" stroke="#f59e0b" strokeWidth="1.75"></path>
+                    
+                    {/* Vision Detected Line (Sky Blue) */}
+                    <path d="M 0,80 L 120,48 L 250,38 L 420,42 L 550,45 L 720,48 L 850,50 L 1000,50" fill="none" stroke="#38bdf8" strokeWidth="2"></path>
+                    
+                    {/* Soft Discrepancy Highlight */}
+                    <polygon fill="rgba(245, 158, 11, 0.08)" points="720,28 1000,28 1000,50 720,48"></polygon>
                   </svg>
                 </div>
               </section>
@@ -230,7 +235,7 @@ export default function MissionControlDashboard() {
           )}
 
           {activeTab === "cctv" && (
-            <div className="space-y-4 animate-in fade-in duration-150">
+            <div className="space-y-6 animate-in fade-in duration-200">
               <LiveVideoQuadrant />
               <OperabilityGauge
                 initialOci={currentCentre.oci}
@@ -242,13 +247,13 @@ export default function MissionControlDashboard() {
           )}
 
           {activeTab === "audit" && (
-            <div className="space-y-4 animate-in fade-in duration-150">
+            <div className="space-y-6 animate-in fade-in duration-200">
               <DiscrepancyMatrix />
             </div>
           )}
 
           {activeTab === "assets" && (
-            <div className="space-y-4 animate-in fade-in duration-150">
+            <div className="space-y-6 animate-in fade-in duration-200">
               <OperabilityGauge
                 initialOci={currentCentre.oci}
                 onOciChange={(newOci) =>
@@ -259,7 +264,7 @@ export default function MissionControlDashboard() {
           )}
 
           {activeTab === "section12a" && (
-            <div className="space-y-4 animate-in fade-in duration-150">
+            <div className="space-y-6 animate-in fade-in duration-200">
               <Section12ANotice
                 frozenAmount={currentCentre.frozenAmount}
                 centreId={currentCentre.id}
@@ -273,7 +278,7 @@ export default function MissionControlDashboard() {
           )}
 
           {activeTab === "waterfall" && (
-            <div className="space-y-4 animate-in fade-in duration-150">
+            <div className="space-y-6 animate-in fade-in duration-200">
               <DevToolsWaterfall />
               <LowBandwidthMonitor
                 centreId={currentCentre.id}
@@ -286,13 +291,13 @@ export default function MissionControlDashboard() {
           )}
 
           {activeTab === "calibrator" && (
-            <div className="space-y-4 animate-in fade-in duration-150">
+            <div className="space-y-6 animate-in fade-in duration-200">
               <EdgeCalibrator onSyncSuccess={pollTelemetry} />
             </div>
           )}
 
           {activeTab === "directory" && (
-            <div className="space-y-4 animate-in fade-in duration-150">
+            <div className="space-y-6 animate-in fade-in duration-200">
               <NationalCentresDirectory
                 selectedCentreId={currentCentre.id}
                 onSelectCentre={handleSelectCentre}

@@ -5,14 +5,14 @@ import {
   Gavel,
   Send,
   Lock,
+  Unlock,
   FileText,
   Printer,
-  CheckCircle2,
   X,
-  ShieldAlert,
-  Download
+  ShieldCheck,
+  Building
 } from "lucide-react";
-import { playTacticalClick, playNoticeFreezeSound, playAlertChime } from "./SoundFx";
+import { playTacticalClick, playNoticeFreezeSound } from "./SoundFx";
 
 interface Section12ANoticeProps {
   frozenAmount: number;
@@ -54,82 +54,76 @@ export const Section12ANotice: React.FC<Section12ANoticeProps> = ({
 
   return (
     <>
-      <div className="bg-surface-container-low border border-error/60 p-3 hud-bracket hud-bracket-error relative">
+      <div className="luxury-card p-5 space-y-4 bg-gradient-to-b from-rose-500/[0.03] to-transparent">
         {/* Header */}
-        <div className="flex flex-wrap justify-between items-start border-b border-outline-variant pb-2 mb-2 gap-2">
+        <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/[0.06]">
           <div>
-            <div className="font-bold text-sm text-error uppercase flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-error text-[18px]">gavel</span>
+            <h3 className="font-semibold text-sm text-white tracking-tight flex items-center gap-2">
+              <Gavel className="w-4 h-4 text-rose-400 stroke-[1.5]" />
               Section 12-A Statutory Withholding
-            </div>
-            <div className="font-mono text-[10px] text-on-surface-variant">
-              Public Finance Management System (PFMS) Direct Benefit Transfer Freeze Engine
-            </div>
+            </h3>
+            <p className="text-xs text-slate-400 font-normal">
+              Automated PFMS Direct Benefit Transfer subsidy freeze engine
+            </p>
           </div>
           <span
-            className={`px-2 py-0.5 border font-mono text-[9px] font-bold ${
+            className={`px-3 py-1 rounded-full text-xs font-semibold border ${
               isFrozen
-                ? "bg-red-950/80 border-red-500 text-red-300 animate-pulse"
-                : "bg-error-container/40 border-error text-error"
+                ? "bg-rose-500/20 border-rose-500/40 text-rose-300"
+                : "bg-white/[0.03] border-white/[0.08] text-slate-300"
             }`}
           >
-            {isFrozen ? "GRANT TRANCHE FROZEN" : "ENFORCEMENT READY"}
+            {isFrozen ? "Grant Tranche Frozen" : "Enforcement Ready"}
           </span>
         </div>
 
         {/* Calculation Breakdown */}
-        <div className="space-y-1.5 text-[11px] mb-3">
-          <div className="flex justify-between items-center font-mono border-b border-outline-variant/40 pb-1">
-            <span className="text-on-surface-variant">
-              Phantom Trainee Headcount ({ghostCount} × ₹14,000/Tranche):
-            </span>
-            <span className="text-on-surface font-semibold">₹{phantomFine.toLocaleString("en-IN")}</span>
+        <div className="space-y-2 text-xs">
+          <div className="flex justify-between items-center text-slate-400 pb-1.5 border-b border-white/[0.04]">
+            <span>Phantom Trainee Headcount ({ghostCount} × ₹14,000/head):</span>
+            <span className="text-white font-medium">₹{phantomFine.toLocaleString("en-IN")}</span>
           </div>
 
-          <div className="flex justify-between items-center font-mono border-b border-outline-variant/40 pb-1">
-            <span className="text-on-surface-variant">
-              Sub-threshold OCI Penalty (Util {ociScore.toFixed(1)}% &lt; 80%):
-            </span>
-            <span className="text-on-surface font-semibold">₹{ociPenalty.toLocaleString("en-IN")}</span>
+          <div className="flex justify-between items-center text-slate-400 pb-1.5 border-b border-white/[0.04]">
+            <span>Sub-80% Machinery Utilization Penalty:</span>
+            <span className="text-white font-medium">₹{ociPenalty.toLocaleString("en-IN")}</span>
           </div>
 
-          <div className="flex justify-between items-center font-mono border-b border-outline-variant/40 pb-1">
-            <span className="text-on-surface-variant">
-              Statutory Non-compliance Surcharge (Rule 12-A):
-            </span>
-            <span className="text-on-surface font-semibold">₹{statutorySurcharge.toLocaleString("en-IN")}</span>
+          <div className="flex justify-between items-center text-slate-400 pb-1.5 border-b border-white/[0.04]">
+            <span>Rule 12-A Administrative Non-Compliance Surcharge:</span>
+            <span className="text-white font-medium">₹{statutorySurcharge.toLocaleString("en-IN")}</span>
           </div>
 
-          <div className="flex justify-between items-center font-mono text-base text-error font-bold pt-1">
-            <span>TOTAL WITHHELD TRANCHE:</span>
-            <span>₹{calculatedTotal.toLocaleString("en-IN")}</span>
+          <div className="flex justify-between items-center pt-1 text-sm font-semibold">
+            <span className="text-slate-200">Total Recoverable Withholding:</span>
+            <span className="text-rose-400 text-base">₹{calculatedTotal.toLocaleString("en-IN")}</span>
           </div>
         </div>
 
-        {/* Action Triggers */}
-        <div className="space-y-2">
+        {/* Actions */}
+        <div className="space-y-2.5 pt-1">
           <button
             onClick={handleDispatchNotice}
-            className="w-full py-2 bg-error-container/30 border border-error hover:bg-error-container/50 text-error font-mono text-[11px] uppercase tracking-wider font-bold flex items-center justify-center gap-2 transition-all active:scale-98"
+            className="w-full py-2.5 px-4 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-300 text-xs font-medium flex items-center justify-center gap-2 transition-all duration-200 shadow-sm"
           >
             <Send className="w-3.5 h-3.5" />
-            <span>{noticeDispatched ? "Re-Inspect Notice (Rule 12-A)" : "Dispatch Show-Cause Notice (Rule 12-A)"}</span>
+            <span>{noticeDispatched ? "Re-Inspect Notice Dossier" : "Dispatch Show-Cause Notice (Rule 12-A)"}</span>
           </button>
 
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-2.5">
             <button
               onClick={() => {
                 playNoticeFreezeSound();
                 onToggleFreeze();
               }}
-              className={`py-1.5 px-2 font-mono text-[10px] uppercase tracking-wider flex items-center justify-center gap-1.5 border transition-all ${
+              className={`py-2 px-3 rounded-xl text-xs font-medium border flex items-center justify-center gap-2 transition-all ${
                 isFrozen
-                  ? "bg-red-950 border-red-500 text-red-300 font-bold"
-                  : "bg-surface-container border-outline-variant hover:border-primary text-on-surface"
+                  ? "bg-rose-500/20 border-rose-500/40 text-rose-300"
+                  : "bg-white/[0.02] border-white/[0.08] text-slate-300 hover:bg-white/[0.05]"
               }`}
             >
-              <Lock className="w-3.5 h-3.5" />
-              <span>{isFrozen ? "Unfreeze PFMS DBT" : "Freeze PFMS DBT"}</span>
+              {isFrozen ? <Unlock className="w-3.5 h-3.5" /> : <Lock className="w-3.5 h-3.5" />}
+              <span>{isFrozen ? "Unfreeze PFMS" : "Freeze PFMS"}</span>
             </button>
 
             <button
@@ -137,129 +131,104 @@ export const Section12ANotice: React.FC<Section12ANoticeProps> = ({
                 playTacticalClick();
                 setModalOpen(true);
               }}
-              className="py-1.5 px-2 bg-surface-container border border-outline-variant hover:border-tertiary text-on-surface font-mono text-[10px] uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all"
+              className="py-2 px-3 rounded-xl bg-white/[0.02] border border-white/[0.08] hover:bg-white/[0.05] text-slate-300 text-xs font-medium flex items-center justify-center gap-2 transition-all"
             >
               <FileText className="w-3.5 h-3.5" />
-              <span>Export Dossier</span>
+              <span>View Dossier</span>
             </button>
           </div>
         </div>
       </div>
 
-      {/* Official Government Statutory Notice Modal */}
+      {/* Official Government Statutory Notice Modal - Luxury Executive Styling */}
       {modalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-[#0b101c] border-2 border-red-500/80 max-w-3xl w-full p-6 max-h-[90vh] overflow-y-auto hud-bracket hud-bracket-error text-slate-100 shadow-2xl relative">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="bg-[#0b101c] border border-white/[0.1] rounded-2xl max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto shadow-2xl text-slate-200 space-y-5">
             {/* Modal Header */}
-            <div className="flex justify-between items-start pb-4 border-b border-outline-variant">
+            <div className="flex justify-between items-start pb-4 border-b border-white/[0.08]">
               <div>
-                <div className="text-red-400 font-mono text-[10px] tracking-widest font-bold uppercase">
-                  GOVERNMENT OF INDIA // STATUTORY ENFORCEMENT ORDER
-                </div>
-                <h2 className="text-xl font-bold font-sans tracking-tight text-white mt-1">
-                  Section 12-A Grant Withholding & Show-Cause Notice
+                <span className="text-[10px] font-medium tracking-wider uppercase text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded-full border border-rose-500/20">
+                  Government of India • Ministry Order
+                </span>
+                <h2 className="text-lg font-semibold text-white tracking-tight mt-1.5">
+                  Section 12-A Grant Withholding Order
                 </h2>
-                <p className="font-mono text-xs text-slate-400">
-                  Ref No: MSDE/SMU/26245/2026/SEC12A-0492 • Date: {new Date().toLocaleDateString("en-IN")}
+                <p className="text-xs text-slate-400 font-mono mt-0.5">
+                  Ref: MSDE/SMU/26245/SEC12A-0492 • {new Date().toLocaleDateString("en-IN")}
                 </p>
               </div>
               <button
                 onClick={() => setModalOpen(false)}
-                className="p-1 border border-slate-700 text-slate-400 hover:text-white hover:bg-slate-800"
+                className="w-8 h-8 rounded-full border border-white/[0.08] flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/[0.06]"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
 
-            {/* Document Body */}
-            <div className="my-5 space-y-4 text-xs font-mono leading-relaxed bg-[#060912] p-4 border border-slate-800">
-              <div className="p-3 bg-red-950/40 border border-red-500/40 text-red-200">
-                <strong>FORMAL DIRECTIVE:</strong> Immediate withholding of Training Provider Grant Tranche #2
+            {/* Document Content */}
+            <div className="space-y-4 text-xs leading-relaxed p-4 rounded-xl bg-white/[0.02] border border-white/[0.06]">
+              <div className="p-3 rounded-lg bg-rose-500/[0.08] border border-rose-500/20 text-rose-200 text-xs font-medium">
+                NOTICE DIRECTIVE: Immediate withholding of Training Provider Grant Tranche #2
                 under Rule 12-A of the National Skill Development Guidelines (2023 Amendment) following
                 continuous edge AI optical sensor audit.
               </div>
 
-              <div>
-                <strong>TO:</strong> Center Director, {centreName} ({centreId})<br />
-                <strong>JURISDICTION:</strong> Scheme Monitoring Unit (SMU), Ministry of Skill Development & Entrepreneurship<br />
-                <strong>ALGORITHMIC AUDIT ID:</strong> KAUSHAL-DRISHTI-SHA256-8F7E29
+              <div className="text-slate-300 space-y-1">
+                <div><strong>Target Facility:</strong> {centreName} ({centreId})</div>
+                <div><strong>Monitoring Directorate:</strong> Scheme Monitoring Unit (SMU), MSDE</div>
+                <div><strong>Cryptographic Hash:</strong> SHA256:8F7E29..D8A9F4</div>
               </div>
 
-              <div className="border-t border-slate-800 pt-3">
-                <p className="font-sans text-sm text-slate-200 font-semibold mb-1">
-                  FINDINGS OF NON-COMPLIANCE:
-                </p>
+              <div className="space-y-2 pt-2 border-t border-white/[0.06]">
+                <div className="font-semibold text-white">Summary of Infractions:</div>
                 <ul className="list-disc pl-5 space-y-1 text-slate-300">
                   <li>
-                    <strong>Ghost Trainee Discrepancy:</strong> Biometric AEBAS claim logged <strong>28 candidates</strong>,
-                    whereas continuous YOLOv8 INT8 edge video detection registered only <strong>22 physically active persons</strong>.
-                    Variance: <strong>-6 candidates (-21.4%)</strong>, breaching the statutory 15% allowance.
+                    <strong>Ghost Trainee Discrepancy:</strong> 28 candidates claimed on AEBAS biometric portal;
+                    only 22 physically present under YOLOv8 verification (-6 phantoms, -21.4% delta).
                   </li>
                   <li>
-                    <strong>Operability Compliance Index (OCI):</strong> Machine hands-on utilization measured at <strong>{ociScore.toFixed(1)}%</strong>,
-                    falling below the statutory minimum threshold of <strong>80.0%</strong> required for direct benefit transfer release.
+                    <strong>Sub-Standard Machine Operability:</strong> Equipment utilization measured at {ociScore.toFixed(1)}%,
+                    falling below the statutory minimum of 80.0% required for DBT disbursement.
                   </li>
                   <li>
-                    <strong>Privacy Verification:</strong> All candidate telemetry was ingested with dynamic Gaussian face-blurring ($k=51 \times 51$)
-                    in full compliance with the Digital Personal Data Protection (DPDP) Act 2023.
+                    <strong>Privacy Compliance:</strong> All telemetry ingested with dynamic Gaussian face-blurring ($k=51 \times 51$)
+                    in full adherence to the Digital Personal Data Protection (DPDP) Act 2023.
                   </li>
                 </ul>
               </div>
 
-              <div className="border-t border-slate-800 pt-3">
-                <p className="font-sans text-sm text-slate-200 font-semibold mb-2">
-                  FINANCIAL PENALTY & WITHHOLDING TABULATION:
-                </p>
-                <table className="w-full text-left border border-slate-700">
-                  <thead className="bg-slate-900 text-slate-400">
+              {/* Penalty Table */}
+              <div className="pt-2 border-t border-white/[0.06]">
+                <table className="w-full text-left border border-white/[0.06] rounded-lg overflow-hidden">
+                  <thead className="bg-white/[0.03] text-slate-400 text-[11px]">
                     <tr>
-                      <th className="p-2 border border-slate-700">Clause</th>
-                      <th className="p-2 border border-slate-700">Infraction Item</th>
-                      <th className="p-2 border border-slate-700 text-right">Withheld Sum</th>
+                      <th className="p-2">Statutory Clause</th>
+                      <th className="p-2">Infraction Item</th>
+                      <th className="p-2 text-right">Withheld Amount</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody className="divide-y divide-white/[0.04]">
                     <tr>
-                      <td className="p-2 border border-slate-700">Sec 12-A(1)</td>
-                      <td className="p-2 border border-slate-700">6 Phantom Trainees @ ₹14,000/head</td>
-                      <td className="p-2 border border-slate-700 text-right">₹{phantomFine.toLocaleString("en-IN")}</td>
+                      <td className="p-2">Sec 12-A(1)</td>
+                      <td className="p-2">6 Ghost Trainees @ ₹14,000/head</td>
+                      <td className="p-2 text-right text-white font-medium">₹{phantomFine.toLocaleString("en-IN")}</td>
                     </tr>
                     <tr>
-                      <td className="p-2 border border-slate-700">Sec 12-A(2)</td>
-                      <td className="p-2 border border-slate-700">Sub-threshold Machinery Util (OCI {ociScore.toFixed(1)}% &lt; 80%)</td>
-                      <td className="p-2 border border-slate-700 text-right">₹{ociPenalty.toLocaleString("en-IN")}</td>
+                      <td className="p-2">Sec 12-A(2)</td>
+                      <td className="p-2">Sub-80% Machinery Operability</td>
+                      <td className="p-2 text-right text-white font-medium">₹{ociPenalty.toLocaleString("en-IN")}</td>
                     </tr>
                     <tr>
-                      <td className="p-2 border border-slate-700">Sec 12-A(4)</td>
-                      <td className="p-2 border border-slate-700">Statutory Non-compliance Surcharge</td>
-                      <td className="p-2 border border-slate-700 text-right">₹{statutorySurcharge.toLocaleString("en-IN")}</td>
+                      <td className="p-2">Sec 12-A(4)</td>
+                      <td className="p-2">Administrative Surcharge</td>
+                      <td className="p-2 text-right text-white font-medium">₹{statutorySurcharge.toLocaleString("en-IN")}</td>
                     </tr>
-                    <tr className="bg-red-950/60 font-bold text-red-300">
-                      <td colSpan={2} className="p-2 border border-slate-700 text-right">
-                        TOTAL RECOVERABLE WITHHOLDING:
-                      </td>
-                      <td className="p-2 border border-slate-700 text-right text-base">
-                        ₹{calculatedTotal.toLocaleString("en-IN")}
-                      </td>
+                    <tr className="bg-white/[0.04] font-semibold text-white">
+                      <td colSpan={2} className="p-2 text-right">Total Grant Withholding:</td>
+                      <td className="p-2 text-right text-rose-400 font-bold">₹{calculatedTotal.toLocaleString("en-IN")}</td>
                     </tr>
                   </tbody>
                 </table>
-              </div>
-
-              <div className="border-t border-slate-800 pt-3 text-[11px] text-slate-400">
-                You are hereby commanded to submit a formal written explanation with physical attendance registers
-                within <strong>7 working days</strong>, failing which de-empanelment and blacklisting proceedings shall commence.
-              </div>
-
-              <div className="pt-4 flex justify-between items-end border-t border-slate-800 text-[10px]">
-                <div>
-                  <div className="font-bold text-slate-300">DIGITALLY SIGNED VIA e-GOV RAILS</div>
-                  <div className="text-slate-500">Cert Hash: 0x9f4c3b2e1a7894d...</div>
-                </div>
-                <div className="text-right">
-                  <div className="font-bold text-slate-300">MISSION DIRECTOR (AUDIT)</div>
-                  <div className="text-slate-500">Ministry of Skill Development & Entrepreneurship</div>
-                </div>
               </div>
             </div>
 
@@ -267,14 +236,14 @@ export const Section12ANotice: React.FC<Section12ANoticeProps> = ({
             <div className="flex justify-end gap-3 pt-2">
               <button
                 onClick={handlePrint}
-                className="px-4 py-2 border border-primary bg-primary/10 hover:bg-primary/20 text-primary font-mono text-xs font-bold flex items-center gap-2"
+                className="px-4 py-2 rounded-xl bg-white/[0.04] border border-white/[0.1] hover:bg-white/[0.08] text-white text-xs font-medium flex items-center gap-2 transition-all"
               >
-                <Printer className="w-4 h-4" />
-                Print / Save PDF
+                <Printer className="w-3.5 h-3.5" />
+                Print Official Order
               </button>
               <button
                 onClick={() => setModalOpen(false)}
-                className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white font-mono text-xs"
+                className="px-4 py-2 rounded-xl bg-white/[0.1] hover:bg-white/[0.15] text-white text-xs font-medium transition-all"
               >
                 Dismiss Window
               </button>

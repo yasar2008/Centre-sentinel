@@ -9,30 +9,22 @@ import {
   Minimize2,
   Play,
   Pause,
-  Download,
-  ShieldCheck,
-  AlertTriangle,
   Layers,
-  Cpu
+  Shield,
+  Circle
 } from "lucide-react";
 import { playTacticalClick, playAlertChime } from "./SoundFx";
 
 interface CameraChannel {
   id: string;
   name: string;
-  description: string;
-  active: boolean;
-  type: string;
-  persons_detected: number;
-  operability_score: number;
+  location: string;
+  persons: number;
+  oci: number;
   alert: string | null;
 }
 
-interface LiveVideoQuadrantProps {
-  onCameraChange?: (camId: string) => void;
-}
-
-export const LiveVideoQuadrant: React.FC<LiveVideoQuadrantProps> = ({ onCameraChange }) => {
+export const LiveVideoQuadrant: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -41,62 +33,24 @@ export const LiveVideoQuadrant: React.FC<LiveVideoQuadrantProps> = ({ onCameraCh
   const [showBlur, setShowBlur] = useState<boolean>(true);
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
-  const [fps, setFps] = useState<number>(15.2);
-  const [bitrate, setBitrate] = useState<number>(34.2);
 
   const cameras: CameraChannel[] = [
-    {
-      id: "CAM-01",
-      name: "Stitching Bay Alpha",
-      description: "Garment Construction & JUKI Rigs",
-      active: true,
-      type: "Garment Lab",
-      persons_detected: 16,
-      operability_score: 88.8,
-      alert: "GHOST CANDIDATE ON BENCH #04",
-    },
-    {
-      id: "CAM-02",
-      name: "CNC Precision Lathe",
-      description: "Lathe Bed 01 & Milling Machine",
-      active: true,
-      type: "Machining Bay",
-      persons_detected: 2,
-      operability_score: 50.0,
-      alert: "MAINTENANCE HOLD ON BED 02",
-    },
-    {
-      id: "CAM-03",
-      name: "SMT Soldering Line",
-      description: "Micro-soldering & Thermal Stations",
-      active: true,
-      type: "Electronics Lab",
-      persons_detected: 6,
-      operability_score: 100.0,
-      alert: null,
-    },
-    {
-      id: "CAM-04",
-      name: "Biometric Ingress Bay",
-      description: "Aadhaar AEBAS Terminal Gate",
-      active: true,
-      type: "Access Control",
-      persons_detected: 0,
-      operability_score: 95.0,
-      alert: "PROXY LOG CONFLICT",
-    },
+    { id: "CAM-01", name: "Stitching Bay Alpha", location: "Garment Lab", persons: 16, oci: 88.8, alert: "Ghost candidate station #04" },
+    { id: "CAM-02", name: "CNC Precision Lathe", location: "Machining Bay", persons: 2, oci: 50.0, alert: "Maintenance hold bed 02" },
+    { id: "CAM-03", name: "SMT Soldering Line", location: "Electronics Lab", persons: 6, oci: 100.0, alert: null },
+    { id: "CAM-04", name: "Biometric Ingress Bay", location: "Access Gate", persons: 0, oci: 95.0, alert: null },
   ];
 
   const currentCam = cameras.find((c) => c.id === selectedCam) || cameras[0];
 
-  // Canvas Synthetic CCTV Simulation Engine
+  // Canvas Simulation Engine - Minimalist Executive Edition
   useEffect(() => {
     let animId: number;
     let t = 0;
 
     const render = () => {
       if (!isPlaying) return;
-      t += 0.03;
+      t += 0.02;
 
       const canvas = canvasRef.current;
       if (!canvas) return;
@@ -106,186 +60,200 @@ export const LiveVideoQuadrant: React.FC<LiveVideoQuadrantProps> = ({ onCameraCh
       const w = canvas.width;
       const h = canvas.height;
 
-      // 1. Draw Lab Background / Industrial Floor
+      // 1. Deep Obsidian Architectural Floor
       const grad = ctx.createLinearGradient(0, 0, 0, h);
-      grad.addColorStop(0, "#09101d");
-      grad.addColorStop(1, "#050811");
+      grad.addColorStop(0, "#0c1322");
+      grad.addColorStop(1, "#070b14");
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, w, h);
 
-      // Perspective Workstation Floor Grid
-      ctx.strokeStyle = "rgba(14, 165, 233, 0.08)";
+      // Clean, elegant perspective floor grid (soft slate lines)
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.04)";
       ctx.lineWidth = 1;
-      for (let y = h * 0.35; y < h; y += 24) {
+      for (let y = h * 0.38; y < h; y += 32) {
         ctx.beginPath();
         ctx.moveTo(0, y);
         ctx.lineTo(w, y);
         ctx.stroke();
       }
-      for (let x = 0; x < w; x += 40) {
+      for (let x = 0; x < w; x += 55) {
         ctx.beginPath();
-        ctx.moveTo(x, h * 0.35);
-        ctx.lineTo((x - w * 0.5) * 1.8 + w * 0.5, h);
+        ctx.moveTo(x, h * 0.38);
+        ctx.lineTo((x - w * 0.5) * 1.6 + w * 0.5, h);
         ctx.stroke();
       }
 
-      // Overhead Fixtures / Lighting Bars
-      ctx.fillStyle = "rgba(137, 206, 255, 0.04)";
-      ctx.fillRect(w * 0.15, h * 0.05, w * 0.7, 12);
-      ctx.fillStyle = "rgba(255, 255, 255, 0.15)";
-      ctx.fillRect(w * 0.2, h * 0.06, w * 0.6, 2);
+      // Overhead soft architectural illumination
+      const lightGrad = ctx.createLinearGradient(w * 0.2, 0, w * 0.8, 0);
+      lightGrad.addColorStop(0, "transparent");
+      lightGrad.addColorStop(0.5, "rgba(56, 189, 248, 0.05)");
+      lightGrad.addColorStop(1, "transparent");
+      ctx.fillStyle = lightGrad;
+      ctx.fillRect(w * 0.2, 0, w * 0.6, h * 0.2);
 
-      // 2. Draw Simulated Workbenches & Machinery
-      // Bench 1 (Left) - JUKI Sewing Rig Alpha
-      ctx.fillStyle = "#162032";
-      ctx.strokeStyle = "rgba(62, 72, 80, 0.8)";
-      ctx.fillRect(w * 0.15, h * 0.45, w * 0.24, h * 0.35);
-      ctx.strokeRect(w * 0.15, h * 0.45, w * 0.24, h * 0.35);
+      // 2. Workbenches (Sleek minimalist industrial aesthetic)
+      // Bench 1 (Left)
+      ctx.fillStyle = "#111827";
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
+      roundRect(ctx, w * 0.14, h * 0.44, w * 0.24, h * 0.38, 8);
+      ctx.fill();
+      ctx.stroke();
 
-      // Sewing machine head
-      ctx.fillStyle = "#25344d";
-      ctx.fillRect(w * 0.22, h * 0.48, w * 0.1, h * 0.14);
+      // JUKI Rig machine
+      ctx.fillStyle = "#1e293b";
+      roundRect(ctx, w * 0.2, h * 0.48, w * 0.11, h * 0.16, 6);
+      ctx.fill();
 
-      // Bench 2 (Center) - JUKI Sewing Rig Beta
-      ctx.fillStyle = "#162032";
-      ctx.fillRect(w * 0.45, h * 0.45, w * 0.24, h * 0.35);
-      ctx.strokeRect(w * 0.45, h * 0.45, w * 0.24, h * 0.35);
+      // Bench 2 (Center)
+      ctx.fillStyle = "#111827";
+      roundRect(ctx, w * 0.44, h * 0.44, w * 0.24, h * 0.38, 8);
+      ctx.fill();
+      ctx.stroke();
 
-      // Bench 3 (Right) - Ghost Bench #04 (EMPTY)
-      ctx.fillStyle = "#181f2c";
-      ctx.fillRect(w * 0.73, h * 0.45, w * 0.2, h * 0.35);
-      ctx.strokeRect(w * 0.73, h * 0.45, w * 0.2, h * 0.35);
+      // Bench 3 (Right) - Bench 04 Ghost Bench
+      ctx.fillStyle = "#131b2c";
+      roundRect(ctx, w * 0.74, h * 0.44, w * 0.2, h * 0.38, 8);
+      ctx.fill();
+      ctx.stroke();
 
-      // 3. Trainee 1 (Working on Bench 1)
-      const sway1 = Math.sin(t * 2) * 3;
-      // Body
-      ctx.fillStyle = "#2c405e";
+      // 3. Trainees (Understated, realistic posture silhouettes)
+      const sway1 = Math.sin(t * 1.8) * 2;
+      // Trainee 1 Torso
+      ctx.fillStyle = "#2d3748";
       ctx.beginPath();
-      ctx.ellipse(w * 0.28 + sway1, h * 0.48, 22, 38, 0, 0, Math.PI * 2);
+      ctx.ellipse(w * 0.27 + sway1, h * 0.5, 20, 36, 0, 0, Math.PI * 2);
       ctx.fill();
       // Head
-      ctx.fillStyle = "#c59b7a";
+      ctx.fillStyle = "#d2b48c";
       ctx.beginPath();
-      ctx.arc(w * 0.28 + sway1, h * 0.38, 14, 0, Math.PI * 2);
+      ctx.arc(w * 0.27 + sway1, h * 0.39, 13, 0, Math.PI * 2);
       ctx.fill();
 
-      // 4. Trainee 2 (Working on Bench 2)
-      const sway2 = Math.cos(t * 1.5) * 2;
-      ctx.fillStyle = "#234b5c";
+      // Trainee 2
+      const sway2 = Math.cos(t * 1.4) * 2;
+      ctx.fillStyle = "#263238";
       ctx.beginPath();
-      ctx.ellipse(w * 0.58 + sway2, h * 0.5, 20, 36, 0, 0, Math.PI * 2);
+      ctx.ellipse(w * 0.57 + sway2, h * 0.52, 19, 34, 0, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = "#b48c69";
+      ctx.fillStyle = "#cbb296";
       ctx.beginPath();
-      ctx.arc(w * 0.58 + sway2, h * 0.4, 13, 0, Math.PI * 2);
+      ctx.arc(w * 0.57 + sway2, h * 0.41, 13, 0, Math.PI * 2);
       ctx.fill();
 
-      // 5. Draw Gaussian Face Blur Mask if enabled (DPDP Act 2023)
+      // 4. Privacy Gaussian Blur Masking (DPDP Act 2023)
       if (showBlur) {
-        // Blur Face 1
-        const b1x = w * 0.28 + sway1 - 18;
-        const b1y = h * 0.38 - 18;
+        // Face 1
+        const b1x = w * 0.27 + sway1 - 18;
+        const b1y = h * 0.39 - 18;
         ctx.save();
-        ctx.fillStyle = "rgba(14, 20, 29, 0.95)";
-        ctx.filter = "blur(8px)";
-        ctx.fillRect(b1x, b1y, 36, 36);
+        ctx.fillStyle = "rgba(15, 23, 42, 0.94)";
+        ctx.filter = "blur(7px)";
+        roundRect(ctx, b1x, b1y, 36, 36, 18);
+        ctx.fill();
         ctx.restore();
 
-        // Privacy tag 1
-        ctx.fillStyle = "#0ea5e9";
-        ctx.font = "bold 9px 'JetBrains Mono', monospace";
-        ctx.fillText("PRIVACY BLUR (k=51)", b1x - 10, b1y - 4);
+        // Minimalist Privacy Tag
+        ctx.fillStyle = "rgba(56, 189, 248, 0.9)";
+        ctx.font = "500 8.5px 'Inter', sans-serif";
+        ctx.fillText("DPDP Act Anonymized", b1x - 14, b1y - 6);
 
-        // Blur Face 2
-        const b2x = w * 0.58 + sway2 - 16;
-        const b2y = h * 0.4 - 16;
+        // Face 2
+        const b2x = w * 0.57 + sway2 - 16;
+        const b2y = h * 0.41 - 16;
         ctx.save();
-        ctx.fillStyle = "rgba(14, 20, 29, 0.95)";
-        ctx.filter = "blur(8px)";
-        ctx.fillRect(b2x, b2y, 32, 32);
+        ctx.fillStyle = "rgba(15, 23, 42, 0.94)";
+        ctx.filter = "blur(7px)";
+        roundRect(ctx, b2x, b2y, 32, 32, 16);
+        ctx.fill();
         ctx.restore();
 
-        ctx.fillStyle = "#0ea5e9";
-        ctx.fillText("PRIVACY BLUR (k=51)", b2x - 10, b2y - 4);
+        ctx.fillStyle = "rgba(56, 189, 248, 0.9)";
+        ctx.fillText("DPDP Act Anonymized", b2x - 14, b2y - 6);
       }
 
-      // 6. Draw HUD Bounding Boxes & Targeting Brackets
+      // 5. Minimalist Elegant Bounding Boxes (Ultra-clean hairlines)
       if (showOverlays) {
-        // Box 1: Trainee TR-08
-        const t1X = w * 0.28 + sway1 - 32;
-        const t1Y = h * 0.34;
-        const t1W = 64;
+        // Trainee 1 Bounding Box
+        const t1X = w * 0.27 + sway1 - 30;
+        const t1Y = h * 0.35;
+        const t1W = 60;
         const t1H = 110;
 
-        ctx.strokeStyle = "#0ea5e9";
-        ctx.lineWidth = 1.5;
-        ctx.strokeRect(t1X, t1Y, t1W, t1H);
+        ctx.strokeStyle = "rgba(56, 189, 248, 0.6)";
+        ctx.lineWidth = 1;
+        roundRect(ctx, t1X, t1Y, t1W, t1H, 6);
+        ctx.stroke();
 
-        // Corner Ticks
-        ctx.lineWidth = 2.5;
-        drawCornerTicks(ctx, t1X, t1Y, t1W, t1H, "#0ea5e9");
+        // Minimalist Floating Tag
+        ctx.fillStyle = "rgba(8, 12, 20, 0.85)";
+        roundRect(ctx, t1X, t1Y + t1H + 4, 125, 20, 4);
+        ctx.fill();
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
+        ctx.stroke();
 
-        // Label Tag
-        ctx.fillStyle = "rgba(9, 14, 23, 0.92)";
-        ctx.fillRect(t1X, t1Y + t1H + 3, 145, 18);
-        ctx.strokeStyle = "#0ea5e9";
-        ctx.strokeRect(t1X, t1Y + t1H + 3, 145, 18);
-        ctx.fillStyle = "#89ceff";
-        ctx.font = "10px 'JetBrains Mono', monospace";
-        ctx.fillText("TR-08 [SEWING] IoU: 0.94", t1X + 4, t1Y + t1H + 15);
+        ctx.fillStyle = "#f8fafc";
+        ctx.font = "500 9px 'Inter', sans-serif";
+        ctx.fillText("Trainee 08", t1X + 8, t1Y + t1H + 17);
+        ctx.fillStyle = "#38bdf8";
+        ctx.font = "500 8.5px 'JetBrains Mono', monospace";
+        ctx.fillText("IoU 0.94", t1X + 75, t1Y + t1H + 17);
 
-        // Box 2: Trainee TR-12
-        const t2X = w * 0.58 + sway2 - 30;
-        const t2Y = h * 0.36;
-        const t2W = 60;
+        // Trainee 2 Bounding Box
+        const t2X = w * 0.57 + sway2 - 28;
+        const t2Y = h * 0.37;
+        const t2W = 56;
         const t2H = 105;
 
-        ctx.strokeStyle = "#0ea5e9";
-        ctx.lineWidth = 1.5;
-        ctx.strokeRect(t2X, t2Y, t2W, t2H);
-        drawCornerTicks(ctx, t2X, t2Y, t2W, t2H, "#0ea5e9");
+        ctx.strokeStyle = "rgba(56, 189, 248, 0.6)";
+        roundRect(ctx, t2X, t2Y, t2W, t2H, 6);
+        ctx.stroke();
 
-        ctx.fillStyle = "rgba(9, 14, 23, 0.92)";
-        ctx.fillRect(t2X, t2Y + t2H + 3, 145, 18);
-        ctx.strokeStyle = "#0ea5e9";
-        ctx.strokeRect(t2X, t2Y + t2H + 3, 145, 18);
-        ctx.fillStyle = "#89ceff";
-        ctx.fillText("TR-12 [CUTTING] IoU: 0.91", t2X + 4, t2Y + t2H + 15);
+        ctx.fillStyle = "rgba(8, 12, 20, 0.85)";
+        roundRect(ctx, t2X, t2Y + t2H + 4, 125, 20, 4);
+        ctx.fill();
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
+        ctx.stroke();
 
-        // Box 3: Machine Rig (JUKI DDL-8700)
-        ctx.strokeStyle = "#10b981";
-        ctx.setLineDash([4, 4]);
-        ctx.strokeRect(w * 0.16, h * 0.52, w * 0.22, h * 0.24);
+        ctx.fillStyle = "#f8fafc";
+        ctx.font = "500 9px 'Inter', sans-serif";
+        ctx.fillText("Trainee 12", t2X + 8, t2Y + t2H + 17);
+        ctx.fillStyle = "#38bdf8";
+        ctx.font = "500 8.5px 'JetBrains Mono', monospace";
+        ctx.fillText("IoU 0.91", t2X + 75, t2Y + t2H + 17);
+
+        // Machine Box (JUKI Sewing Rig)
+        ctx.strokeStyle = "rgba(16, 185, 129, 0.5)";
+        ctx.setLineDash([3, 3]);
+        roundRect(ctx, w * 0.16, h * 0.52, w * 0.2, h * 0.22, 6);
+        ctx.stroke();
         ctx.setLineDash([]);
-        ctx.fillStyle = "rgba(9, 14, 23, 0.9)";
-        ctx.fillRect(w * 0.16, h * 0.52, 160, 16);
-        ctx.fillStyle = "#4edea3";
-        ctx.font = "9px 'JetBrains Mono', monospace";
-        ctx.fillText("JUKI DDL-8700 [ACTIVE: 84Hz VIB]", w * 0.16 + 4, h * 0.52 + 12);
 
-        // Box 4: GHOST CANDIDATE ON BENCH 04 (Flashing Amber)
-        const isAmberBlink = Math.floor(t * 3) % 2 === 0;
-        const amberColor = isAmberBlink ? "#ff9933" : "#d7790d";
-        ctx.strokeStyle = amberColor;
-        ctx.lineWidth = 2;
-        ctx.strokeRect(w * 0.72, h * 0.38, w * 0.22, h * 0.42);
-        drawCornerTicks(ctx, w * 0.72, h * 0.38, w * 0.22, h * 0.42, amberColor);
+        ctx.fillStyle = "rgba(8, 12, 20, 0.85)";
+        roundRect(ctx, w * 0.16, h * 0.52 - 18, 130, 16, 4);
+        ctx.fill();
+        ctx.fillStyle = "#10b981";
+        ctx.font = "500 8.5px 'JetBrains Mono', monospace";
+        ctx.fillText("JUKI DDL-8700 • Active 84Hz", w * 0.16 + 6, h * 0.52 - 6);
 
-        ctx.fillStyle = "rgba(9, 14, 23, 0.95)";
-        ctx.fillRect(w * 0.72, h * 0.38 - 32, w * 0.22, 30);
-        ctx.strokeStyle = amberColor;
-        ctx.strokeRect(w * 0.72, h * 0.38 - 32, w * 0.22, 30);
+        // Bench #04 Ghost Discrepancy Indicator (Muted Champagne Amber)
+        ctx.strokeStyle = "rgba(245, 158, 11, 0.6)";
+        ctx.lineWidth = 1;
+        roundRect(ctx, w * 0.74, h * 0.44, w * 0.2, h * 0.38, 8);
+        ctx.stroke();
 
-        ctx.fillStyle = amberColor;
-        ctx.font = "bold 9px 'JetBrains Mono', monospace";
-        ctx.fillText("⚠ GHOST DETECTED (BENCH #04)", w * 0.72 + 6, h * 0.38 - 18);
-        ctx.fillStyle = "#dee2f0";
-        ctx.font = "8px 'JetBrains Mono', monospace";
-        ctx.fillText("IDLE 42m • CLAIMED: AEBAS 09:12", w * 0.72 + 6, h * 0.38 - 6);
+        ctx.fillStyle = "rgba(8, 12, 20, 0.9)";
+        roundRect(ctx, w * 0.74, h * 0.44 - 24, w * 0.2, 22, 4);
+        ctx.fill();
+        ctx.strokeStyle = "rgba(245, 158, 11, 0.3)";
+        ctx.stroke();
+
+        ctx.fillStyle = "#f59e0b";
+        ctx.font = "600 9px 'Inter', sans-serif";
+        ctx.fillText("Ghost Station 04", w * 0.74 + 8, h * 0.44 - 10);
+        ctx.fillStyle = "#94a3b8";
+        ctx.font = "500 8px 'JetBrains Mono', monospace";
+        ctx.fillText("Idle 42m", w * 0.74 + w * 0.2 - 45, h * 0.44 - 10);
       }
-
-      // 7. Tactical HUD Corner Reticles on full viewport
-      drawReticleCorners(ctx, w, h);
 
       animId = requestAnimationFrame(render);
     };
@@ -294,70 +262,25 @@ export const LiveVideoQuadrant: React.FC<LiveVideoQuadrantProps> = ({ onCameraCh
     return () => cancelAnimationFrame(animId);
   }, [isPlaying, showBlur, showOverlays, selectedCam]);
 
-  function drawCornerTicks(
+  function roundRect(
     ctx: CanvasRenderingContext2D,
     x: number,
     y: number,
     w: number,
     h: number,
-    color: string
+    radius: number
   ) {
-    const len = 8;
-    ctx.strokeStyle = color;
-    // Top-left
     ctx.beginPath();
-    ctx.moveTo(x, y + len);
-    ctx.lineTo(x, y);
-    ctx.lineTo(x + len, y);
-    ctx.stroke();
-    // Top-right
-    ctx.beginPath();
-    ctx.moveTo(x + w - len, y);
-    ctx.lineTo(x + w, y);
-    ctx.lineTo(x + w, y + len);
-    ctx.stroke();
-    // Bottom-left
-    ctx.beginPath();
-    ctx.moveTo(x, y + h - len);
-    ctx.lineTo(x, y + h);
-    ctx.lineTo(x + len, y + h);
-    ctx.stroke();
-    // Bottom-right
-    ctx.beginPath();
-    ctx.moveTo(x + w - len, y + h);
-    ctx.lineTo(x + w, y + h);
-    ctx.lineTo(x + w, y + h - len);
-    ctx.stroke();
-  }
-
-  function drawReticleCorners(ctx: CanvasRenderingContext2D, w: number, h: number) {
-    ctx.strokeStyle = "rgba(14, 165, 233, 0.4)";
-    ctx.lineWidth = 1;
-    const len = 15;
-    // Top-left
-    ctx.beginPath();
-    ctx.moveTo(10, 10 + len);
-    ctx.lineTo(10, 10);
-    ctx.lineTo(10 + len, 10);
-    ctx.stroke();
-    // Top-right
-    ctx.beginPath();
-    ctx.moveTo(w - 10 - len, 10);
-    ctx.lineTo(w - 10, 10);
-    ctx.lineTo(w - 10, 10 + len);
-    ctx.stroke();
-    // Bottom-left
-    ctx.beginPath();
-    ctx.moveTo(10, h - 10 - len);
-    ctx.lineTo(10, h - 10);
-    ctx.lineTo(10 + len, h - 10);
-    ctx.stroke();
-    // Bottom-right
-    ctx.beginPath();
-    ctx.moveTo(w - 10 - len, h - 10);
-    ctx.lineTo(w - 10, h - 10);
-    ctx.lineTo(w - 10, h - 10 - len);
-    ctx.stroke();
+    ctx.moveTo(x + radius, y);
+    ctx.lineTo(x + w - radius, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + radius);
+    ctx.lineTo(x + w, y + h - radius);
+    ctx.quadraticCurveTo(x + w, y + h, x + w - radius, y + h);
+    ctx.lineTo(x + radius, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - radius);
+    ctx.lineTo(x, y + radius);
+    ctx.quadraticCurveTo(x, y, x + radius, y);
+    ctx.closePath();
   }
 
   const handleCaptureSnapshot = useCallback(() => {
@@ -365,9 +288,9 @@ export const LiveVideoQuadrant: React.FC<LiveVideoQuadrantProps> = ({ onCameraCh
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const dataUrl = canvas.toDataURL("image/webp", 0.85);
+    const dataUrl = canvas.toDataURL("image/webp", 0.9);
     const link = document.createElement("a");
-    link.download = `msde_audit_${selectedCam}_${Date.now()}.webp`;
+    link.download = `msde_audit_proof_${selectedCam}_${Date.now()}.webp`;
     link.href = dataUrl;
     link.click();
   }, [selectedCam]);
@@ -388,89 +311,71 @@ export const LiveVideoQuadrant: React.FC<LiveVideoQuadrantProps> = ({ onCameraCh
     }
   };
 
-  const handleSelectCamera = async (camId: string) => {
-    playTacticalClick();
-    setSelectedCam(camId);
-    if (onCameraChange) onCameraChange(camId);
-
-    // Sync with Edge Agent backend camera selector
-    try {
-      await fetch("http://localhost:8000/api/v1/cameras/select", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ camera_id: camId }),
-      });
-    } catch (_err) {
-      // Ignored if local gateway proxy handles it
-    }
-  };
-
   return (
-    <div className="bg-surface-container-low border border-outline-variant p-3 relative hud-bracket" ref={containerRef}>
-      {/* Header Bar */}
-      <div className="flex flex-wrap items-center justify-between pb-2 mb-2 border-b border-outline-variant gap-2">
-        <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 bg-error rounded-none animate-ping"></span>
-          <span className="font-bold text-sm text-on-surface uppercase tracking-wide">
-            FEED {selectedCam} // {currentCam.name.toUpperCase()}
+    <div className="luxury-card p-5 space-y-4" ref={containerRef}>
+      {/* Top Feed Header */}
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+            <span className="font-semibold text-sm text-white tracking-tight">
+              {currentCam.name}
+            </span>
+          </div>
+          <span className="text-xs text-slate-400 font-normal">
+            • {currentCam.location}
           </span>
         </div>
-        <div className="flex items-center gap-2 font-mono text-[10px] text-on-surface-variant">
-          <span className="px-1.5 py-0.5 bg-surface-container-highest border border-outline-variant">
-            YOLOv8-GhostNet INT8
+
+        <div className="flex items-center gap-3 text-xs text-slate-400">
+          <span className="font-mono text-[11px] bg-white/[0.04] px-2.5 py-1 rounded-full border border-white/[0.06]">
+            YOLOv8 INT8 • 42 FPS
           </span>
-          <span className="px-1.5 py-0.5 bg-surface-container-highest border border-outline-variant text-tertiary">
-            {bitrate} kbps
+          <span className="font-mono text-[11px] bg-white/[0.04] px-2.5 py-1 rounded-full border border-white/[0.06]">
+            34.2 kbps
           </span>
-          <span className="text-outline">{fps} FPS</span>
         </div>
       </div>
 
-      {/* Main Video Viewport Canvas */}
-      <div className="relative w-full aspect-video bg-surface-container-lowest border border-outline-variant/80 overflow-hidden hud-scanline select-none">
+      {/* Main Viewport Container */}
+      <div className="relative w-full aspect-video bg-[#070b14] rounded-xl overflow-hidden border border-white/[0.08] shadow-inner group">
         <canvas
           ref={canvasRef}
-          width={840}
-          height={472}
+          width={880}
+          height={495}
           className="w-full h-full object-cover"
         />
 
-        {/* Top-Left Telemetry Coordinates */}
-        <div className="absolute top-2.5 left-2.5 font-mono text-[10px] text-primary/90 bg-surface-container-lowest/90 px-2 py-0.5 border border-primary/30 flex items-center gap-2">
-          <span>CAM_ID: NODE_26245_{selectedCam}</span>
-          <span className="text-outline">LAT: 25.3176° N • LON: 82.9739° E</span>
-        </div>
-
-        {/* Top-Right Active Controls Overlay */}
-        <div className="absolute top-2.5 right-2.5 flex items-center gap-1.5 bg-surface-container-lowest/90 border border-outline-variant px-1.5 py-1">
-          {/* Toggle Blur */}
+        {/* Top-Right Minimalist Floating Controls */}
+        <div className="absolute top-3 right-3 flex items-center gap-1.5 bg-[#080c14]/75 backdrop-blur-xl border border-white/[0.1] p-1 rounded-full shadow-lg">
+          {/* DPDP Blur Toggle */}
           <button
             onClick={() => {
               playTacticalClick();
               setShowBlur((prev) => !prev);
             }}
-            className={`p-1 text-[10px] font-mono flex items-center gap-1 border transition-colors ${
-              showBlur ? "border-primary bg-primary/20 text-primary" : "border-outline-variant text-outline"
+            className={`px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 transition-all ${
+              showBlur ? "bg-white/[0.12] text-white shadow-sm" : "text-slate-400 hover:text-white"
             }`}
-            title="DPDP Act 2023 Gaussian Blur (k=51)"
+            title="Toggle DPDP Act 2023 Gaussian Blur"
           >
             {showBlur ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-            <span className="hidden sm:inline">DPDP Blur</span>
+            <span>Privacy Blur</span>
           </button>
 
-          {/* Toggle Overlays */}
+          {/* Overlays Toggle */}
           <button
             onClick={() => {
               playTacticalClick();
               setShowOverlays((prev) => !prev);
             }}
-            className={`p-1 text-[10px] font-mono flex items-center gap-1 border transition-colors ${
-              showOverlays ? "border-tertiary bg-tertiary/20 text-tertiary" : "border-outline-variant text-outline"
+            className={`px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 transition-all ${
+              showOverlays ? "bg-white/[0.12] text-white shadow-sm" : "text-slate-400 hover:text-white"
             }`}
-            title="Toggle YOLOv8 Bounding Boxes & IoU"
+            title="Toggle Detection Bounding Boxes"
           >
             <Layers className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">HUD Boxes</span>
+            <span>HUD Tags</span>
           </button>
 
           {/* Pause / Play */}
@@ -479,7 +384,7 @@ export const LiveVideoQuadrant: React.FC<LiveVideoQuadrantProps> = ({ onCameraCh
               playTacticalClick();
               setIsPlaying((prev) => !prev);
             }}
-            className="p-1 border border-outline-variant hover:border-primary text-on-surface"
+            className="w-7 h-7 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/[0.06] transition-colors"
             title={isPlaying ? "Pause Feed" : "Resume Feed"}
           >
             {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
@@ -488,8 +393,8 @@ export const LiveVideoQuadrant: React.FC<LiveVideoQuadrantProps> = ({ onCameraCh
           {/* Snapshot */}
           <button
             onClick={handleCaptureSnapshot}
-            className="p-1 border border-outline-variant hover:border-tertiary text-on-surface"
-            title="Capture Audit Proof Frame (WebP)"
+            className="w-7 h-7 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/[0.06] transition-colors"
+            title="Capture Audit Proof (WebP)"
           >
             <Camera className="w-3.5 h-3.5" />
           </button>
@@ -497,57 +402,47 @@ export const LiveVideoQuadrant: React.FC<LiveVideoQuadrantProps> = ({ onCameraCh
           {/* Fullscreen */}
           <button
             onClick={toggleFullscreen}
-            className="p-1 border border-outline-variant hover:border-primary text-on-surface"
-            title="Toggle Fullscreen"
+            className="w-7 h-7 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/[0.06] transition-colors"
+            title="Fullscreen"
           >
             {isFullscreen ? <Minimize2 className="w-3.5 h-3.5" /> : <Maximize2 className="w-3.5 h-3.5" />}
           </button>
         </div>
 
-        {/* Bottom-Right Stream Certification Seal */}
-        <div className="absolute bottom-2.5 right-2.5 flex items-center gap-2 bg-surface-container-lowest/90 border border-outline-variant px-2 py-1">
-          <span className="font-mono text-[9px] text-tertiary flex items-center gap-1">
-            <span className="w-1.5 h-1.5 bg-tertiary inline-block animate-pulse"></span>
-            ENCRYPTED JETSON ORIN INT8 STREAM
-          </span>
-          <span className="font-mono text-[9px] text-outline">CH-HASH: 8f7e2..a91</span>
-        </div>
-
-        {/* Bottom-Left Watermark Directive */}
-        <div className="absolute bottom-2.5 left-2.5 opacity-60 pointer-events-none select-none font-mono text-[9px] text-outline uppercase tracking-widest">
-          MSDE DIGITAL SURVEILLANCE DIRECTIVE // RECORDING CERTIFIED
+        {/* Bottom Left Minimalist Location Tag */}
+        <div className="absolute bottom-3 left-3 text-[11px] text-slate-400 bg-[#080c14]/80 backdrop-blur-md px-3 py-1 rounded-full border border-white/[0.08]">
+          Centre: TC-UP-VNS-0492 • Feed {selectedCam} • 25.31° N, 82.97° E
         </div>
       </div>
 
-      {/* 4-Channel Camera Switcher Strip */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-1.5 mt-2">
+      {/* Camera Selector Strip (Minimalist Glass Pills) */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
         {cameras.map((cam) => {
           const isSelected = selectedCam === cam.id;
           return (
             <button
               key={cam.id}
-              onClick={() => handleSelectCamera(cam.id)}
-              className={`p-1.5 text-left transition-all border ${
+              onClick={() => {
+                playTacticalClick();
+                setSelectedCam(cam.id);
+              }}
+              className={`p-3 rounded-xl text-left border transition-all duration-200 ${
                 isSelected
-                  ? "bg-surface-container-high border-2 border-primary"
-                  : "bg-surface-container border-outline-variant hover:border-outline"
+                  ? "bg-white/[0.08] border-white/[0.18] shadow-sm"
+                  : "bg-white/[0.02] border-white/[0.06] hover:bg-white/[0.04] hover:border-white/[0.1]"
               }`}
             >
-              <div className="flex items-center justify-between text-[10px] font-mono">
-                <span className={isSelected ? "text-primary font-bold" : "text-outline"}>
-                  {cam.id} {isSelected ? "[ACTIVE]" : ""}
+              <div className="flex items-center justify-between text-xs mb-1">
+                <span className={`font-medium ${isSelected ? "text-white" : "text-slate-400"}`}>
+                  {cam.id}
                 </span>
-                <span
-                  className={`w-1.5 h-1.5 inline-block ${
-                    cam.alert ? "bg-secondary animate-ping" : "bg-tertiary"
-                  }`}
-                ></span>
+                <span className={`w-1.5 h-1.5 rounded-full ${cam.alert ? "bg-amber-400" : "bg-emerald-400"}`}></span>
               </div>
-              <div className="font-mono text-[10px] text-on-surface truncate">
+              <div className="text-xs font-medium text-slate-200 truncate">
                 {cam.name}
               </div>
-              <div className="font-mono text-[8px] text-outline truncate">
-                OCI: {cam.operability_score}% • {cam.persons_detected} Detected
+              <div className="text-[11px] text-slate-500 truncate mt-0.5">
+                {cam.location} • {cam.persons} Active
               </div>
             </button>
           );
