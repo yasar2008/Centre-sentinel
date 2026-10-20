@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Building, Users, CheckCircle2, AlertTriangle, Gauge, ShieldAlert } from "lucide-react";
+import { Building, Users, CheckCircle2, AlertTriangle, Activity, Lock } from "lucide-react";
 
 interface MetricRibbonProps {
   centreId: string;
@@ -27,103 +27,101 @@ export const MetricRibbon: React.FC<MetricRibbonProps> = ({
 
   return (
     <section className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3.5">
-      {/* 1. Target Centre */}
-      <div className="luxury-card p-4 flex flex-col justify-between">
-        <div className="flex items-center justify-between text-slate-400 mb-2">
-          <span className="text-[11px] font-medium uppercase tracking-wider">Target Centre</span>
-          <span className="text-[10px] font-medium text-sky-400 bg-sky-500/10 px-2 py-0.5 rounded-full border border-sky-500/20">
+      {/* 1. Target Training Centre */}
+      <div className="bg-white border border-slate-200 rounded-xl p-4 flex flex-col justify-between shadow-sm">
+        <div className="flex items-center justify-between text-slate-500 mb-2">
+          <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Focus Centre</span>
+          <span className="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
             PMKVY 4.0
           </span>
         </div>
         <div>
-          <div className="font-semibold text-base text-white tracking-tight truncate">{centreId}</div>
-          <div className="text-[11px] text-slate-400 truncate mt-0.5">{centreName}</div>
+          <div className="font-bold text-base text-slate-900 tracking-tight truncate">{centreId}</div>
+          <div className="text-xs text-slate-500 truncate mt-0.5">{centreName}</div>
         </div>
       </div>
 
-      {/* 2. Portal Registered Claim */}
-      <div className="luxury-card p-4 flex flex-col justify-between">
-        <div className="flex items-center justify-between text-slate-400 mb-2">
-          <span className="text-[11px] font-medium uppercase tracking-wider">Portal Claim</span>
-          <Users className="w-3.5 h-3.5 text-slate-400 stroke-[1.5]" />
+      {/* 2. Aadhaar AEBAS Biometric Punches */}
+      <div className="bg-white border border-slate-200 rounded-xl p-4 flex flex-col justify-between shadow-sm">
+        <div className="flex items-center justify-between text-slate-500 mb-2">
+          <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">AEBAS Punches</span>
+          <Users className="w-3.5 h-3.5 text-slate-400" />
         </div>
         <div>
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-semibold tracking-tight text-white">{portalClaim}</span>
-            <span className="text-xs text-slate-400 font-medium">candidates</span>
+            <span className="text-2xl font-bold tracking-tight text-slate-900">{portalClaim}</span>
+            <span className="text-xs text-slate-500 font-medium">registered</span>
           </div>
-          <div className="text-[11px] text-slate-400 mt-0.5">AEBAS Biometric 09:00</div>
+          <div className="text-xs text-slate-500 mt-0.5">Biometric Terminal 09:00</div>
         </div>
       </div>
 
-      {/* 3. Actual Vision Count */}
-      <div className="luxury-card p-4 flex flex-col justify-between">
-        <div className="flex items-center justify-between text-slate-400 mb-2">
-          <span className="text-[11px] font-medium uppercase tracking-wider">Vision Count</span>
-          <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+      {/* 3. Physical CCTV Headcount */}
+      <div className="bg-white border border-slate-200 rounded-xl p-4 flex flex-col justify-between shadow-sm">
+        <div className="flex items-center justify-between text-slate-500 mb-2">
+          <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Physical Presence</span>
+          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
         </div>
         <div>
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-semibold tracking-tight text-emerald-400">{detectedCount}</span>
-            <span className="text-xs text-slate-400 font-medium">active</span>
+            <span className="text-2xl font-bold tracking-tight text-emerald-700">{detectedCount}</span>
+            <span className="text-xs text-emerald-800 font-medium">present</span>
           </div>
-          <div className="text-[11px] text-emerald-500/80 mt-0.5">Continuous IoU &gt; 0.88</div>
+          <div className="text-xs text-slate-500 mt-0.5">YOLOv8 Headcount Verify</div>
         </div>
       </div>
 
-      {/* 4. Ghost Variance */}
-      <div className="luxury-card p-4 flex flex-col justify-between bg-gradient-to-b from-amber-500/[0.04] to-transparent">
-        <div className="flex items-center justify-between text-slate-400 mb-2">
-          <span className="text-[11px] font-medium uppercase tracking-wider text-amber-300">Variance Delta</span>
-          <span className="text-[10px] font-medium text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20">
+      {/* 4. Unattended / Ghost Seats */}
+      <div className="bg-white border border-amber-200 bg-amber-50/30 rounded-xl p-4 flex flex-col justify-between shadow-sm">
+        <div className="flex items-center justify-between text-slate-500 mb-2">
+          <span className="text-[11px] font-semibold text-amber-900 uppercase tracking-wider">Unverified Gap</span>
+          <span className="text-[10px] font-bold text-amber-800 bg-amber-100 px-2 py-0.5 rounded-full border border-amber-200">
             -{discrepancyPercent}%
           </span>
         </div>
         <div>
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-semibold tracking-tight text-amber-300">
+            <span className="text-2xl font-bold tracking-tight text-amber-900">
               {discrepancyCount > 0 ? `-${discrepancyCount}` : "0"}
             </span>
-            <span className="text-xs text-amber-400/80 font-medium">phantoms</span>
+            <span className="text-xs text-amber-800 font-medium">unattended</span>
           </div>
-          <div className="text-[11px] text-slate-400 mt-0.5">Threshold Allowance 15%</div>
+          <div className="text-xs text-slate-500 mt-0.5">Physical Absence Detected</div>
         </div>
       </div>
 
-      {/* 5. Operability Index (OCI) */}
-      <div className="luxury-card p-4 flex flex-col justify-between">
-        <div className="flex items-center justify-between text-slate-400 mb-2">
-          <span className="text-[11px] font-medium uppercase tracking-wider">Operability Index</span>
-          <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full border ${
-            isOciSubThreshold
-              ? "text-rose-400 bg-rose-500/10 border-rose-500/20"
-              : "text-emerald-400 bg-emerald-500/10 border-emerald-500/20"
-          }`}>
-            {isOciSubThreshold ? "Sub-80%" : "Optimal"}
-          </span>
+      {/* 5. Practical Machinery Utilization */}
+      <div className="bg-white border border-slate-200 rounded-xl p-4 flex flex-col justify-between shadow-sm">
+        <div className="flex items-center justify-between text-slate-500 mb-2">
+          <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Machinery Usage</span>
+          <Activity className="w-3.5 h-3.5 text-slate-400" />
         </div>
         <div>
           <div className="flex items-baseline gap-2">
-            <span className={`text-2xl font-semibold tracking-tight ${isOciSubThreshold ? "text-rose-400" : "text-emerald-400"}`}>
+            <span className={`text-2xl font-bold tracking-tight ${
+              isOciSubThreshold ? "text-amber-800" : "text-emerald-700"
+            }`}>
               {operabilityScore.toFixed(1)}%
             </span>
-            <span className="text-xs text-slate-400 font-medium">OCI util</span>
+            <span className="text-xs text-slate-500 font-medium">utilized</span>
           </div>
-          <div className="text-[11px] text-slate-400 mt-0.5">Min Mandate 80.0%</div>
+          <div className="text-xs text-slate-500 mt-0.5">
+            {isOciSubThreshold ? "Below 80% Threshold" : "Meeting Standards"}
+          </div>
         </div>
       </div>
 
-      {/* 6. Section 12-A Withhold */}
-      <div className="luxury-card p-4 flex flex-col justify-between bg-gradient-to-b from-rose-500/[0.06] to-transparent">
-        <div className="flex items-center justify-between text-slate-400 mb-2">
-          <span className="text-[11px] font-medium uppercase tracking-wider text-rose-300">Sec 12-A Withhold</span>
-          <ShieldAlert className="w-3.5 h-3.5 text-rose-400 stroke-[1.5]" />
+      {/* 6. Section 12-A Withheld Grant */}
+      <div className="bg-white border border-rose-200 bg-rose-50/20 rounded-xl p-4 flex flex-col justify-between shadow-sm">
+        <div className="flex items-center justify-between text-slate-500 mb-2">
+          <span className="text-[11px] font-semibold text-rose-900 uppercase tracking-wider">Withheld Subsidy</span>
+          <Lock className="w-3.5 h-3.5 text-rose-600" />
         </div>
         <div>
-          <div className="text-2xl font-semibold tracking-tight text-rose-400">
+          <div className="text-2xl font-bold tracking-tight text-rose-700">
             ₹{frozenAmount.toLocaleString("en-IN")}
           </div>
-          <div className="text-[11px] text-rose-300/80 mt-0.5">PFMS Grant Frozen</div>
+          <div className="text-xs text-slate-500 mt-0.5">PFMS Section 12-A Order</div>
         </div>
       </div>
     </section>

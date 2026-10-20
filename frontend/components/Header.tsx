@@ -7,10 +7,11 @@ import {
   RefreshCw,
   Wifi,
   WifiOff,
-  Lock,
-  Unlock,
   Shield,
-  Activity
+  Building,
+  CheckCircle2,
+  Lock,
+  Unlock
 } from "lucide-react";
 import { playTacticalClick, playNoticeFreezeSound } from "./SoundFx";
 
@@ -37,7 +38,7 @@ export const Header: React.FC<HeaderProps> = ({
   onEmergencyFreeze,
   freezeActive,
 }) => {
-  const [clockStr, setClockStr] = useState<string>("13:42:09 IST");
+  const [clockStr, setClockStr] = useState<string>("20:59:17 IST");
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -51,127 +52,118 @@ export const Header: React.FC<HeaderProps> = ({
   }, []);
 
   const navLinks = [
-    { id: "cockpit", label: "Executive Overview" },
-    { id: "database", label: "Real SQLite DB" },
-    { id: "directory", label: "Centres Registry" },
-    { id: "audit", label: "Discrepancy Matrix" },
-    { id: "section12a", label: "Section 12-A Enforcement" },
-    { id: "waterfall", label: "Telemetry & Audit" },
+    { id: "cockpit", label: "Overview" },
+    { id: "database", label: "Database & AEBAS" },
+    { id: "cctv", label: "Live Cameras" },
+    { id: "audit", label: "Attendance Verification" },
+    { id: "directory", label: "Centres Directory" },
+    { id: "section12a", label: "Grant Compliance" },
   ];
 
   return (
-    <header className="w-full px-6 lg:px-8 flex items-center justify-between border-b border-white/[0.06] bg-[#080c14]/80 backdrop-blur-2xl h-16 sticky top-0 z-50 select-none transition-all">
-      {/* Brand & Executive Identity */}
-      <div className="flex items-center gap-3.5">
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-b from-white/[0.08] to-white/[0.02] border border-white/[0.1] flex items-center justify-center relative shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)]">
-          <Shield className="w-5 h-5 text-sky-400 stroke-[1.5]" />
-          <div className="absolute top-1 right-1 w-1.5 h-1.5 bg-emerald-400 rounded-full"></div>
-        </div>
-        <div>
-          <div className="flex items-center gap-2">
-            <span className="font-semibold text-sm tracking-tight text-white">
-              KAUSHAL-DRISHTI
-            </span>
-            <span className="text-[10px] font-medium text-slate-400 bg-white/[0.04] border border-white/[0.06] px-1.5 py-0.5 rounded-md">
-              MSDE 26245
-            </span>
+    <header className="w-full bg-white border-b border-slate-200 sticky top-0 z-50 select-none shadow-sm">
+      {/* Subtle National Tricolor Top Accent Strip */}
+      <div className="w-full h-1 bg-gradient-to-r from-amber-500 via-slate-100 to-emerald-600"></div>
+
+      <div className="px-5 lg:px-8 flex items-center justify-between h-16">
+        {/* Ministry & Portal Brand Identity */}
+        <div className="flex items-center gap-3.5">
+          <div className="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center font-bold shadow-sm">
+            <Building className="w-5 h-5 text-amber-400" />
           </div>
-          <div className="text-[11px] text-slate-400 font-normal flex items-center gap-2">
-            <span>Ministry of Skill Development & Entrepreneurship</span>
-            <span className="text-slate-600">•</span>
-            <span className="font-mono text-[10px] text-slate-500">{clockStr}</span>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="font-bold text-sm tracking-tight text-slate-900">
+                KAUSHAL-DRISHTI
+              </span>
+              <span className="text-[11px] font-semibold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-full border border-slate-200">
+                MSDE ID 26245
+              </span>
+            </div>
+            <div className="text-xs text-slate-500 flex items-center gap-2 mt-0.5">
+              <span>Ministry of Skill Development and Entrepreneurship</span>
+              <span className="text-slate-300">•</span>
+              <span className="text-slate-600 font-medium">{clockStr}</span>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Center: Minimalist Floating Segmented Nav Pill */}
-      <nav className="hidden lg:flex items-center bg-white/[0.03] border border-white/[0.06] p-1 rounded-full backdrop-blur-md shadow-[inset_0_1px_0_0_rgba(255,255,255,0.03)]">
-        {navLinks.map((tab) => {
-          const isActive = activeTab === tab.id;
-          return (
-            <button
-              key={tab.id}
-              onClick={() => {
-                playTacticalClick();
-                setActiveTab(tab.id);
-              }}
-              className={`text-xs px-3.5 py-1.5 rounded-full transition-all duration-200 font-medium ${
-                isActive
-                  ? "bg-white/[0.1] text-white shadow-sm border border-white/[0.1]"
-                  : "text-slate-400 hover:text-slate-200 hover:bg-white/[0.02]"
-              }`}
-            >
-              {tab.label}
-            </button>
-          );
-        })}
-      </nav>
+        {/* Center: Clean Human Navigation Tabs */}
+        <nav className="hidden lg:flex items-center bg-slate-100 p-1 rounded-full border border-slate-200">
+          {navLinks.map((tab) => {
+            const isActive = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => {
+                  playTacticalClick();
+                  setActiveTab(tab.id);
+                }}
+                className={`text-xs px-3.5 py-1.5 rounded-full transition-all duration-150 font-medium ${
+                  isActive
+                    ? "bg-slate-900 text-white shadow-sm"
+                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-200/60"
+                }`}
+              >
+                {tab.label}
+              </button>
+            );
+          })}
+        </nav>
 
-      {/* Right Action Cluster */}
-      <div className="flex items-center gap-2.5">
-        {/* Live Network Pill */}
-        <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/[0.06] border border-emerald-500/20 text-emerald-400 text-xs font-medium">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span>Edge Sync • 14ms</span>
+        {/* Right Action Cluster */}
+        <div className="flex items-center gap-2.5">
+          {/* Live Edge Status */}
+          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-medium">
+            <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
+            <span>Live Center Sync</span>
+          </div>
+
+          {/* Rural Low-Bandwidth Mode */}
+          <button
+            onClick={() => {
+              playTacticalClick();
+              setLowBwMode((prev) => !prev);
+            }}
+            className={`px-3 py-1.5 rounded-full text-xs font-medium flex items-center gap-1.5 border transition-all ${
+              lowBwMode
+                ? "bg-blue-50 border-blue-200 text-blue-800 font-semibold"
+                : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
+            }`}
+            title="Rural Low-Bandwidth Mode (<64 kbps)"
+          >
+            {lowBwMode ? <Wifi className="w-3.5 h-3.5 text-blue-600" /> : <WifiOff className="w-3.5 h-3.5 text-slate-400" />}
+            <span>Rural Mode (2 KB)</span>
+          </button>
+
+          {/* Refresh Action */}
+          <button
+            onClick={() => {
+              playTacticalClick();
+              onRefresh();
+            }}
+            className="p-2 rounded-full bg-white border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors"
+            title="Refresh Attendance & Vision Telemetry"
+          >
+            <RefreshCw className="w-3.5 h-3.5" />
+          </button>
+
+          {/* Statutory Section 12-A Holding Order Button */}
+          <button
+            onClick={() => {
+              playNoticeFreezeSound();
+              onEmergencyFreeze();
+            }}
+            className={`px-3.5 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 border transition-all ${
+              freezeActive
+                ? "bg-rose-600 text-white border-rose-700 shadow-sm"
+                : "bg-rose-50 border-rose-200 text-rose-700 hover:bg-rose-100"
+            }`}
+          >
+            {freezeActive ? <Lock className="w-3.5 h-3.5" /> : <Unlock className="w-3.5 h-3.5" />}
+            <span>{freezeActive ? "Grant Frozen" : "Section 12-A Action"}</span>
+          </button>
         </div>
-
-        {/* Low-Bandwidth Mode Pill */}
-        <button
-          onClick={() => {
-            playTacticalClick();
-            setLowBwMode((prev) => !prev);
-          }}
-          className={`px-3 py-1.5 rounded-full text-xs font-medium flex items-center gap-1.5 border transition-all ${
-            lowBwMode
-              ? "bg-sky-500/[0.08] border-sky-500/30 text-sky-400"
-              : "bg-white/[0.02] border-white/[0.08] text-slate-400 hover:text-white"
-          }`}
-          title="Rural 2KB Telemetry Mode"
-        >
-          {lowBwMode ? <Wifi className="w-3.5 h-3.5 text-sky-400" /> : <WifiOff className="w-3.5 h-3.5 text-slate-500" />}
-          <span>2KB Rural</span>
-        </button>
-
-        {/* Emergency Section 12-A Grant Freeze Button */}
-        <button
-          onClick={() => {
-            playNoticeFreezeSound();
-            onEmergencyFreeze();
-          }}
-          className={`px-3.5 py-1.5 rounded-full text-xs font-medium flex items-center gap-1.5 border transition-all ${
-            freezeActive
-              ? "bg-rose-500/20 border-rose-500/40 text-rose-300 shadow-[0_0_15px_rgba(244,63,94,0.25)]"
-              : "bg-rose-500/[0.06] border-rose-500/20 hover:border-rose-500/40 text-rose-400"
-          }`}
-          title="Emergency PFMS Subsidy Freeze"
-        >
-          {freezeActive ? <Lock className="w-3.5 h-3.5" /> : <Unlock className="w-3.5 h-3.5" />}
-          <span>{freezeActive ? "Grant Frozen" : "Freeze Grant"}</span>
-        </button>
-
-        {/* Sound Toggle */}
-        <button
-          onClick={() => {
-            playTacticalClick();
-            setSoundEnabled((prev) => !prev);
-          }}
-          className="w-8 h-8 rounded-full border border-white/[0.08] bg-white/[0.02] hover:bg-white/[0.06] flex items-center justify-center text-slate-400 hover:text-white transition-colors"
-          title={soundEnabled ? "Mute Feedback" : "Enable Sound"}
-        >
-          {soundEnabled ? <Volume2 className="w-3.5 h-3.5 text-slate-300" /> : <VolumeX className="w-3.5 h-3.5 text-slate-500" />}
-        </button>
-
-        {/* Refresh */}
-        <button
-          onClick={() => {
-            playTacticalClick();
-            onRefresh();
-          }}
-          className="w-8 h-8 rounded-full border border-white/[0.08] bg-white/[0.02] hover:bg-white/[0.06] flex items-center justify-center text-slate-400 hover:text-white transition-colors"
-          title="Refresh Telemetry"
-        >
-          <RefreshCw className="w-3.5 h-3.5 text-slate-300" />
-        </button>
       </div>
     </header>
   );

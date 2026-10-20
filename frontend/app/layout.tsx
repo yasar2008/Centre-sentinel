@@ -4,7 +4,7 @@ import "./globals.css";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://kaushal-drishti.msde.gov.in";
 
 export const viewport: Viewport = {
-  themeColor: "#070D18",
+  themeColor: "#f8fafc",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -112,14 +112,14 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdSchema) }}
         />
       </head>
-      <body className="min-h-screen bg-[#070D18] text-slate-100 antialiased selection:bg-cyan-500 selection:text-black">
+      <body className="min-h-screen bg-[#f8fafc] text-slate-900 antialiased selection:bg-amber-100 selection:text-amber-900 font-sans">
         {children}
       </body>
     </html>

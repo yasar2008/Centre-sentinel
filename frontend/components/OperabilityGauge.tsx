@@ -51,24 +51,25 @@ export const OperabilityGauge: React.FC<OperabilityGaugeProps> = ({
   };
 
   return (
-    <div className="luxury-card p-5 space-y-4">
+    <div className="bg-white border border-slate-200 rounded-xl p-5 space-y-4 shadow-sm">
       {/* Header */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/[0.06]">
+      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-100">
         <div>
-          <h3 className="font-semibold text-sm text-white tracking-tight">
+          <h3 className="font-bold text-sm text-slate-900 tracking-tight flex items-center gap-2">
+            <Activity className="w-4 h-4 text-blue-600" />
             Equipment Hands-On Operability (OCI)
           </h3>
-          <p className="text-xs text-slate-400 font-normal">
-            Verifying physical student machinery interaction via spatial IoU tracking
+          <p className="text-xs text-slate-500 font-normal mt-0.5">
+            Verifying physical student machinery interaction during vocational practical hours
           </p>
         </div>
         <div className="flex items-center gap-2.5">
-          <span className="text-xs text-slate-500 font-medium">Standard: &gt;= 80.0%</span>
+          <span className="text-xs text-slate-500 font-medium">Statutory Benchmark: 80.0%</span>
           <span
             className={`px-3 py-1 rounded-full text-xs font-semibold border ${
               isSubThreshold
-                ? "bg-rose-500/10 border-rose-500/20 text-rose-400"
-                : "bg-emerald-500/10 border-emerald-500/20 text-emerald-400"
+                ? "bg-amber-50 border-amber-200 text-amber-800"
+                : "bg-emerald-50 border-emerald-200 text-emerald-800"
             }`}
           >
             Aggregate OCI: {aggregateOci.toFixed(1)}%
@@ -79,101 +80,104 @@ export const OperabilityGauge: React.FC<OperabilityGaugeProps> = ({
       {/* 3 Equipment Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5">
         {/* 1. JUKI Sewing Line */}
-        <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] space-y-2.5">
+        <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/80 space-y-3">
           <div className="flex justify-between items-center text-xs">
-            <span className="text-white font-medium flex items-center gap-2">
-              <Activity className="w-3.5 h-3.5 text-sky-400" />
+            <span className="text-slate-900 font-semibold flex items-center gap-1.5">
+              <Activity className="w-3.5 h-3.5 text-blue-600" />
               JUKI Sewing Rigs
             </span>
-            <span className="text-slate-300 font-mono text-[11px]">
-              {sewingActive} / {totalSewing} active
+            <span className="text-slate-600 font-medium text-[11px]">
+              {sewingActive} / {totalSewing} in use
             </span>
           </div>
           {/* Progress bar */}
-          <div className="w-full bg-white/[0.06] h-1.5 rounded-full overflow-hidden">
+          <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
             <div
-              className="bg-sky-400 h-full rounded-full transition-all duration-300"
+              className="bg-blue-600 h-full rounded-full transition-all duration-300"
               style={{ width: `${sewingUtil}%` }}
             ></div>
           </div>
-          <div className="flex justify-between text-[11px] text-slate-400">
-            <span>Vibration: 78.4 Hz</span>
-            <span className="text-sky-400 font-medium">{sewingUtil.toFixed(1)}%</span>
+          <div className="flex justify-between text-[11px] text-slate-500">
+            <span>Apparel Practical</span>
+            <span className="text-blue-700 font-semibold">{sewingUtil.toFixed(1)}%</span>
           </div>
-          <div className="pt-2 border-t border-white/[0.04] flex items-center gap-2">
+          <div className="pt-2 border-t border-slate-200/60 flex flex-col gap-1">
+            <label className="text-[10px] text-slate-500 font-medium">Adjust Active Trainees</label>
             <input
               type="range"
               min={0}
               max={totalSewing}
               value={sewingActive}
               onChange={(e) => handleUpdate("sewing", parseInt(e.target.value, 10))}
-              className="w-full h-1 bg-white/[0.08] rounded-full cursor-pointer accent-sky-400"
+              className="w-full h-1.5 bg-slate-200 rounded-full cursor-pointer accent-blue-600"
             />
           </div>
         </div>
 
         {/* 2. CNC Lathe Bed */}
-        <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] space-y-2.5">
+        <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/80 space-y-3">
           <div className="flex justify-between items-center text-xs">
-            <span className="text-white font-medium flex items-center gap-2">
-              <Wrench className="w-3.5 h-3.5 text-amber-400" />
+            <span className="text-slate-900 font-semibold flex items-center gap-1.5">
+              <Wrench className="w-3.5 h-3.5 text-amber-600" />
               CNC Lathe Bed 02
             </span>
-            <span className="text-slate-300 font-mono text-[11px]">
-              {cncActive} / {totalCnc} active
+            <span className="text-slate-600 font-medium text-[11px]">
+              {cncActive} / {totalCnc} in use
             </span>
           </div>
-          <div className="w-full bg-white/[0.06] h-1.5 rounded-full overflow-hidden">
+          <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
             <div
-              className="bg-amber-400 h-full rounded-full transition-all duration-300"
+              className="bg-amber-500 h-full rounded-full transition-all duration-300"
               style={{ width: `${cncUtil}%` }}
             ></div>
           </div>
-          <div className="flex justify-between text-[11px] text-slate-400">
-            <span>Spindle: {cncActive === 2 ? "1200 RPM" : "0 RPM [Hold]"}</span>
-            <span className="text-amber-400 font-medium">{cncUtil.toFixed(0)}%</span>
+          <div className="flex justify-between text-[11px] text-slate-500">
+            <span>Precision Machining</span>
+            <span className="text-amber-700 font-semibold">{cncUtil.toFixed(0)}%</span>
           </div>
-          <div className="pt-2 border-t border-white/[0.04] flex items-center gap-2">
+          <div className="pt-2 border-t border-slate-200/60 flex flex-col gap-1">
+            <label className="text-[10px] text-slate-500 font-medium">Adjust Active Machines</label>
             <input
               type="range"
               min={0}
               max={totalCnc}
               value={cncActive}
               onChange={(e) => handleUpdate("cnc", parseInt(e.target.value, 10))}
-              className="w-full h-1 bg-white/[0.08] rounded-full cursor-pointer accent-amber-400"
+              className="w-full h-1.5 bg-slate-200 rounded-full cursor-pointer accent-amber-500"
             />
           </div>
         </div>
 
         {/* 3. SMT Soldering Stations */}
-        <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] space-y-2.5">
+        <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/80 space-y-3">
           <div className="flex justify-between items-center text-xs">
-            <span className="text-white font-medium flex items-center gap-2">
-              <Flame className="w-3.5 h-3.5 text-emerald-400" />
-              SMT Soldering Stations
+            <span className="text-slate-900 font-semibold flex items-center gap-1.5">
+              <Flame className="w-3.5 h-3.5 text-emerald-600" />
+              SMT Soldering Benches
             </span>
-            <span className="text-slate-300 font-mono text-[11px]">
-              {solderingActive} / {totalSoldering} active
+            <span className="text-slate-600 font-medium text-[11px]">
+              {solderingActive} / {totalSoldering} in use
             </span>
           </div>
-          <div className="w-full bg-white/[0.06] h-1.5 rounded-full overflow-hidden">
+          <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
             <div
-              className="bg-emerald-400 h-full rounded-full transition-all duration-300"
+              className="bg-emerald-600 h-full rounded-full transition-all duration-300"
               style={{ width: `${solderingUtil}%` }}
             ></div>
           </div>
-          <div className="flex justify-between text-[11px] text-slate-400">
-            <span>Thermal: 350.2°C</span>
-            <span className="text-emerald-400 font-medium">{solderingUtil.toFixed(0)}%</span>
+          <div className="flex justify-between text-[11px] text-slate-500">
+            <span>Electronics Bench</span>
+            <span className="text-emerald-700 font-semibold">{solderingUtil.toFixed(0)}%</span>
           </div>
-          <div className="pt-2 border-t border-white/[0.04] flex items-center gap-2">
+          <div className="pt-2 border-t border-slate-200/60 flex flex-col gap-1">
+            <label className="text-[10px] text-slate-500 font-medium">Adjust Active Benches</label>
             <input
               type="range"
               min={0}
               max={totalSoldering}
               value={solderingActive}
               onChange={(e) => handleUpdate("soldering", parseInt(e.target.value, 10))}
-              className="w-full h-1 bg-white/[0.08] rounded-full cursor-pointer accent-emerald-400"
+              className="w-full h-1.5 bg-slate-200 rounded-full cursor-pointer accent-emerald-600"
             />
           </div>
         </div>

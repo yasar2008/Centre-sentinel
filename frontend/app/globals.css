@@ -1,83 +1,81 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..600,0..1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --background: #080c14;
-  --foreground: #f1f5f9;
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --card-bg: #ffffff;
+  --card-border: #e2e8f0;
+  --brand-navy: #0f172a;
+  --brand-saffron: #d97706;
+  --brand-green: #16a34a;
+}
+
+.dark {
+  --background: #0f172a;
+  --foreground: #f8fafc;
+  --card-bg: #1e293b;
+  --card-border: #334155;
 }
 
 body {
   color: var(--foreground);
-  background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(56, 189, 248, 0.05), transparent 70%), #080c14;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--background);
+  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Material Symbols sizing */
-.material-symbols-outlined {
-  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
-  vertical-align: middle;
-}
-
-/* Luxury Double-Bezel Card Architecture */
-.luxury-card {
-  background: rgba(13, 19, 33, 0.65);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  box-shadow: 
-    0 4px 20px -2px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.07);
+/* Human Executive Card Architecture (Warm, Dignified, High Contrast) */
+.luxury-card, .human-card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
   border-radius: 1rem;
+  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.06), 0 1px 2px -1px rgba(15, 23, 42, 0.04);
+  color: #0f172a;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.luxury-card:hover {
-  border-color: rgba(255, 255, 255, 0.12);
-  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+.luxury-card:hover, .human-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.08), 0 2px 6px -2px rgba(15, 23, 42, 0.04);
 }
 
-/* Luxury Interactive Glass Pill */
+/* Human Interactive Pill */
 .glass-pill {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: #f1f5f9;
+  border: 1px solid #e2e8f0;
   border-radius: 9999px;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  color: #334155;
+  transition: all 0.15s ease;
 }
 
 .glass-pill:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.18);
+  background-color: #e2e8f0;
+  color: #0f172a;
 }
 
-/* Monospace numbers without layout shift */
-.tabular-nums {
-  font-variant-numeric: tabular-nums;
-}
-
-/* Minimalist Dark Luxury Scrollbars */
+/* Clean, Human Scrollbars */
 ::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: #f1f5f9;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: #cbd5e1;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: #94a3b8;
 }
 
-/* Print Styles for Section 12-A Statutory Order */
+/* Print Styles for Official Ministry Orders */
 @media print {
   body {
     background: #ffffff !important;
@@ -88,11 +86,5 @@ body {
   }
   .print-only {
     display: block !important;
-  }
-  .legal-document {
-    border: 1px solid #000000 !important;
-    padding: 32px !important;
-    background: #ffffff !important;
-    color: #000000 !important;
   }
 }

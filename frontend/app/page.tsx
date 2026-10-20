@@ -101,7 +101,7 @@ export default function MissionControlDashboard() {
   const ghostCount = Math.max(0, currentCentre.claimed - currentCentre.detected);
 
   return (
-    <div className="bg-[#080c14] text-slate-100 min-h-screen flex flex-col selection:bg-sky-500 selection:text-black overflow-x-hidden font-sans">
+    <div className="bg-[#f8fafc] text-slate-900 min-h-screen flex flex-col selection:bg-amber-100 selection:text-amber-900 overflow-x-hidden font-sans">
       {/* 1. Executive Minimalist Header */}
       <Header
         activeTab={activeTab}
@@ -115,10 +115,10 @@ export default function MissionControlDashboard() {
         freezeActive={isFrozen}
       />
 
-      {/* Global Minimal Notification Banner */}
+      {/* Global Human Notification Banner */}
       {notification && (
-        <div className="w-full bg-rose-500/[0.08] border-b border-rose-500/20 py-2 px-6 text-center text-xs text-rose-300 font-medium tracking-wide animate-in fade-in duration-200 flex items-center justify-center gap-2">
-          <span className="w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse"></span>
+        <div className="w-full bg-amber-50 border-b border-amber-200 py-2.5 px-6 text-center text-xs text-amber-900 font-medium tracking-normal animate-in fade-in duration-200 flex items-center justify-center gap-2 shadow-xs">
+          <span className="w-2 h-2 rounded-full bg-amber-600 animate-pulse"></span>
           <span>{notification}</span>
         </div>
       )}
@@ -186,49 +186,49 @@ export default function MissionControlDashboard() {
                 </div>
               </section>
 
-              {/* 24-Hour Continuous Telemetry Trend Strip (Luxury Minimalist Edition) */}
-              <section className="luxury-card p-5 space-y-4">
-                <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/[0.06]">
+              {/* 24-Hour Continuous Telemetry Trend Strip (Clean Human Edition) */}
+              <section className="bg-white border border-slate-200 rounded-xl p-5 space-y-4 shadow-sm">
+                <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-100">
                   <div>
-                    <h3 className="font-semibold text-sm text-white tracking-tight">
-                      24-Hour Continuous Telemetry &amp; OCI Trend
+                    <h3 className="font-bold text-sm text-slate-900 tracking-tight">
+                      24-Hour Continuous Attendance &amp; Machinery Trend
                     </h3>
-                    <p className="text-xs text-slate-400 font-normal">
-                      Reconciled optical detection vs biometric claimed headcount over rolling 24-hour window
+                    <p className="text-xs text-slate-500 font-normal">
+                      Reconciled optical CCTV detection vs digital AEBAS biometric attendance across rolling 24 hours
                     </p>
                   </div>
-                  <div className="flex items-center gap-5 text-xs text-slate-400">
-                    <span className="flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-sky-400"></span> Vision Headcount
+                  <div className="flex items-center gap-5 text-xs text-slate-600">
+                    <span className="flex items-center gap-1.5 font-medium">
+                      <span className="w-2.5 h-2.5 rounded-full bg-blue-600"></span> Verified Headcount
                     </span>
-                    <span className="flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-slate-500"></span> Claimed Biometric
+                    <span className="flex items-center gap-1.5 font-medium">
+                      <span className="w-2.5 h-2.5 rounded-full bg-slate-400"></span> Digital Biometric
                     </span>
-                    <span className="flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-amber-400"></span> OCI Util %
+                    <span className="flex items-center gap-1.5 font-medium">
+                      <span className="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Equipment Util %
                     </span>
                   </div>
                 </div>
 
                 {/* Elegant SVG Chart */}
-                <div className="w-full h-28 rounded-xl bg-white/[0.01] border border-white/[0.04] relative overflow-hidden flex items-end p-2">
+                <div className="w-full h-28 rounded-xl bg-slate-50 border border-slate-100 relative overflow-hidden flex items-end p-2">
                   <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 1000 100">
                     {/* Subtle Gridlines */}
-                    <line stroke="rgba(255,255,255,0.04)" strokeDasharray="3,3" strokeWidth="1" x1="0" x2="1000" y1="25" y2="25"></line>
-                    <line stroke="rgba(255,255,255,0.04)" strokeDasharray="3,3" strokeWidth="1" x1="0" x2="1000" y1="50" y2="50"></line>
-                    <line stroke="rgba(255,255,255,0.04)" strokeDasharray="3,3" strokeWidth="1" x1="0" x2="1000" y1="75" y2="75"></line>
+                    <line stroke="rgba(15, 23, 42, 0.06)" strokeDasharray="3,3" strokeWidth="1" x1="0" x2="1000" y1="25" y2="25"></line>
+                    <line stroke="rgba(15, 23, 42, 0.06)" strokeDasharray="3,3" strokeWidth="1" x1="0" x2="1000" y1="50" y2="50"></line>
+                    <line stroke="rgba(15, 23, 42, 0.06)" strokeDasharray="3,3" strokeWidth="1" x1="0" x2="1000" y1="75" y2="75"></line>
                     
                     {/* Portal Claim Line (Dotted Slate) */}
-                    <path d="M 0,30 L 120,30 L 250,28 L 420,28 L 600,28 L 800,28 L 1000,28" fill="none" stroke="rgba(148,163,184,0.4)" strokeDasharray="5,4" strokeWidth="1.5"></path>
+                    <path d="M 0,30 L 120,30 L 250,28 L 420,28 L 600,28 L 800,28 L 1000,28" fill="none" stroke="#64748b" strokeDasharray="5,4" strokeWidth="1.75"></path>
                     
-                    {/* OCI Operability (Champagne Amber) */}
-                    <path d="M 0,75 L 120,62 L 250,55 L 420,48 L 550,52 L 720,45 L 850,50 L 1000,52" fill="none" stroke="#f59e0b" strokeWidth="1.75"></path>
+                    {/* OCI Operability (Warm Amber) */}
+                    <path d="M 0,75 L 120,62 L 250,55 L 420,48 L 550,52 L 720,45 L 850,50 L 1000,52" fill="none" stroke="#d97706" strokeWidth="2"></path>
                     
-                    {/* Vision Detected Line (Sky Blue) */}
-                    <path d="M 0,80 L 120,48 L 250,38 L 420,42 L 550,45 L 720,48 L 850,50 L 1000,50" fill="none" stroke="#38bdf8" strokeWidth="2"></path>
+                    {/* Vision Detected Line (Deep Blue) */}
+                    <path d="M 0,80 L 120,48 L 250,38 L 420,42 L 550,45 L 720,48 L 850,50 L 1000,50" fill="none" stroke="#2563eb" strokeWidth="2.25"></path>
                     
                     {/* Soft Discrepancy Highlight */}
-                    <polygon fill="rgba(245, 158, 11, 0.08)" points="720,28 1000,28 1000,50 720,48"></polygon>
+                    <polygon fill="rgba(217, 119, 6, 0.09)" points="720,28 1000,28 1000,50 720,48"></polygon>
                   </svg>
                 </div>
               </section>

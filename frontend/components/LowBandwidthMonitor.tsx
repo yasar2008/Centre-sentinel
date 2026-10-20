@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Wifi, Copy, Check, Radio } from "lucide-react";
+import { Copy, Check, Radio } from "lucide-react";
 import { playTacticalClick } from "./SoundFx";
 
 interface LowBandwidthMonitorProps {
@@ -43,49 +43,52 @@ export const LowBandwidthMonitor: React.FC<LowBandwidthMonitorProps> = ({
   };
 
   return (
-    <div className="luxury-card p-5 space-y-4">
+    <div className="bg-white border border-slate-200 rounded-xl p-5 space-y-4 shadow-sm">
       {/* Header */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/[0.06]">
+      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-100">
         <div>
-          <h3 className="font-semibold text-sm text-white tracking-tight flex items-center gap-2">
-            <Radio className="w-4 h-4 text-sky-400 stroke-[1.5]" />
+          <h3 className="font-bold text-sm text-slate-900 tracking-tight flex items-center gap-2">
+            <Radio className="w-4 h-4 text-blue-600" />
             Rural Low-Bandwidth Telemetry (2.04 KB)
           </h3>
-          <p className="text-xs text-slate-400 font-normal">
-            LoRaWAN and 2G solar link telemetry with 99.98% video uplink reduction
+          <p className="text-xs text-slate-500 font-normal mt-0.5">
+            Optimized for 2G rural mobile data links with 99.98% bandwidth reduction vs raw video streaming
           </p>
         </div>
-        <span className="text-xs font-semibold px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
+        <span className="text-xs font-semibold px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800">
           99.98% Bandwidth Saved
         </span>
       </div>
 
       {/* 3 Metric Pills */}
       <div className="grid grid-cols-3 gap-3 text-center">
-        <div className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.06]">
-          <div className="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Packet Size</div>
-          <div className="text-lg font-semibold tracking-tight text-white mt-1">2.04 KB</div>
+        <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/80">
+          <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Packet Size</div>
+          <div className="text-lg font-bold tracking-tight text-slate-900 mt-1">2.04 KB</div>
+          <div className="text-[10px] text-slate-400">JSON Telemetry</div>
         </div>
-        <div className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.06]">
-          <div className="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Uplink Tech</div>
-          <div className="text-lg font-semibold tracking-tight text-sky-400 mt-1">LoRa / 2G</div>
+        <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/80">
+          <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Uplink Tech</div>
+          <div className="text-lg font-bold tracking-tight text-blue-700 mt-1">LoRa / 2G</div>
+          <div className="text-[10px] text-slate-400">Solar Supported</div>
         </div>
-        <div className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.06]">
-          <div className="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Proof WebP</div>
-          <div className="text-lg font-semibold tracking-tight text-emerald-400 mt-1">12.4 KB</div>
+        <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/80">
+          <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Audit Proof</div>
+          <div className="text-lg font-bold tracking-tight text-emerald-700 mt-1">12.4 KB</div>
+          <div className="text-[10px] text-slate-400">WebP Compressed</div>
         </div>
       </div>
 
       {/* JSON Payload Viewer */}
       <div className="relative">
-        <div className="bg-[#070b14] p-3.5 rounded-xl border border-white/[0.06] font-mono text-[11px] text-sky-300/90 overflow-x-auto whitespace-pre leading-relaxed max-h-40">
+        <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200 text-[11px] text-slate-800 font-mono overflow-x-auto whitespace-pre leading-relaxed max-h-40">
           {JSON.stringify(payload, null, 2)}
         </div>
         <button
           onClick={handleCopy}
-          className="absolute top-3 right-3 px-2.5 py-1 bg-white/[0.08] hover:bg-white/[0.12] border border-white/[0.1] rounded-lg text-white text-[10px] font-medium flex items-center gap-1.5 transition-colors"
+          className="absolute top-2.5 right-2.5 px-2.5 py-1 bg-white hover:bg-slate-100 border border-slate-300 rounded-lg text-slate-700 text-[11px] font-semibold flex items-center gap-1.5 transition-colors shadow-xs"
         >
-          {copied ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+          {copied ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
           <span>{copied ? "Copied" : "Copy Payload"}</span>
         </button>
       </div>
