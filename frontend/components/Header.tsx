@@ -86,15 +86,15 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-extrabold text-sm tracking-tight text-slate-900 group-hover:text-blue-700 transition-colors">
-                PRASHIKSHAN SAMIKSHA
+              <span className="font-extrabold text-base tracking-tight text-slate-900 group-hover:text-blue-700 transition-colors">
+                SKILLWATCH
               </span>
-              <span className="text-[10px] font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-full border border-slate-200">
+              <span className="text-[10px] font-bold text-blue-800 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
                 MSDE ID 26245
               </span>
             </div>
             <div className="text-[11px] text-slate-500 flex items-center gap-2 mt-0.5">
-              <span>प्रशिक्षण समीक्षा • Ministry of Skill Development</span>
+              <span>National Skill Surveillance • Ministry of Skill Development</span>
               <span className="text-slate-300">•</span>
               <span className="text-slate-700 font-medium">{clockStr}</span>
             </div>

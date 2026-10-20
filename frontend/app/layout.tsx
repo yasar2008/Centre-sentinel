@@ -13,15 +13,16 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "PRASHIKSHAN SAMIKSHA | National Skill Centre Surveillance & Attendance Verification (MSDE)",
-    template: "%s | PRASHIKSHAN SAMIKSHA (MSDE)",
+    default: "SkillWatch | National Skill Training Surveillance & Attendance Verification Portal (MSDE)",
+    template: "%s | SkillWatch (MSDE)",
   },
   description:
     "Ministry of Skill Development and Entrepreneurship (MSDE Problem ID 26245) real-time privacy-preserving edge video analytics platform for training centre attendance discrepancy detection and infrastructure compliance monitoring under rural low-bandwidth constraints.",
   keywords: [
     "MSDE",
     "Skill India",
-    "Prashikshan Samiksha",
+    "SkillWatch",
+    "National SkillWatch",
     "Problem ID 26245",
     "Edge AI",
     "Privacy-Preserving Video Analytics",
@@ -49,11 +50,11 @@ export const metadata: Metadata = {
     canonical: SITE_URL,
   },
   openGraph: {
-    title: "PRASHIKSHAN SAMIKSHA: National Skill Centre Surveillance & Attendance Verification",
+    title: "SkillWatch: National Skill Training Surveillance & Attendance Verification Portal",
     description:
       "Official SMU portal monitoring 15,000+ empaneled vocational training centres across India with zero biometric storage and low-bandwidth rural telemetry.",
     url: SITE_URL,
-    siteName: "PRASHIKSHAN SAMIKSHA MSDE Portal",
+    siteName: "SkillWatch National MSDE Portal",
     locale: "en_IN",
     type: "website",
     images: [
@@ -86,8 +87,8 @@ export default function RootLayout({
   const jsonLdSchema = {
     "@context": "https://schema.org",
     "@type": "GovernmentService",
-    name: "PRASHIKSHAN SAMIKSHA - National Skill Training Centre Surveillance Portal",
-    alternateName: "MSDE Problem ID 26245 Biometric Compliance Grid",
+    name: "SkillWatch - National Skill Training Centre Surveillance & Biometric Verification Portal",
+    alternateName: "MSDE Problem ID 26245 SkillWatch Compliance Grid",
     serviceType: "Vocational Training Centre Monitoring and Audit",
     provider: {
       "@type": "GovernmentOrganization",

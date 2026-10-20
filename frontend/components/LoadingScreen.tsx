@@ -76,14 +76,14 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete, forceS
             <div className="inline-block text-[11px] font-bold uppercase tracking-wider text-amber-800 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">
               Government of India • Ministry Portal
             </div>
-            <h1 className="text-xl font-bold text-slate-900 tracking-tight mt-1.5">
-              PRASHIKSHAN SAMIKSHA
+            <h1 className="text-2xl font-black text-slate-900 tracking-tight mt-1.5">
+              SKILLWATCH
             </h1>
-            <div className="text-xs font-semibold text-slate-700">
-              प्रशिक्षण समीक्षा पोर्टल
+            <div className="text-xs font-bold text-blue-700 tracking-wide mt-0.5">
+              National Skill Training Surveillance &amp; Attendance Verification Portal
             </div>
             <p className="text-xs text-slate-500 mt-1">
-              Ministry of Skill Development and Entrepreneurship (MSDE)
+              Ministry of Skill Development and Entrepreneurship (MSDE), Government of India
             </p>
           </div>
         </div>

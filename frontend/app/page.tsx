@@ -175,11 +175,11 @@ export default function GrandMainPage() {
             </div>
 
             <div className="space-y-3">
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
-                PRASHIKSHAN SAMIKSHA
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-tight">
+                SKILLWATCH
               </h1>
               <div className="text-lg sm:text-xl font-bold text-blue-800">
-                राष्ट्रीय कौशल प्रशिक्षण केंद्र निगरानी एवं बायोमेट्रिक सत्यापन पोर्टल
+                National Skill Training Surveillance &amp; Attendance Verification Portal
               </div>
               <p className="text-sm sm:text-base text-slate-600 max-w-3xl leading-relaxed">
                 National real-time privacy-preserving video analytics platform monitoring empaneled vocational training centres across India.
@@ -424,7 +424,7 @@ export default function GrandMainPage() {
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
           <div className="space-y-1">
             <div className="font-bold text-slate-800">
-              PRASHIKSHAN SAMIKSHA • Scheme Monitoring Unit (SMU)
+              SkillWatch • Scheme Monitoring Unit (SMU)
             </div>
             <div>
               Ministry of Skill Development and Entrepreneurship, Government of India
