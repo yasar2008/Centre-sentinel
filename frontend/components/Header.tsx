@@ -52,6 +52,7 @@ export const Header: React.FC<HeaderProps> = ({
 
   const navLinks = [
     { id: "cockpit", label: "Executive Overview" },
+    { id: "database", label: "Real SQLite DB" },
     { id: "directory", label: "Centres Registry" },
     { id: "audit", label: "Discrepancy Matrix" },
     { id: "section12a", label: "Section 12-A Enforcement" },

@@ -12,6 +12,7 @@ import { LowBandwidthMonitor } from "../components/LowBandwidthMonitor";
 import { DevToolsWaterfall } from "../components/DevToolsWaterfall";
 import { EdgeCalibrator } from "../components/EdgeCalibrator";
 import { NationalCentresDirectory, CentreItem } from "../components/NationalCentresDirectory";
+import { RealWorldDatabaseManager } from "../components/RealWorldDatabaseManager";
 import { playNoticeFreezeSound, setSoundEnabled } from "../components/SoundFx";
 
 export default function MissionControlDashboard() {
@@ -231,6 +232,17 @@ export default function MissionControlDashboard() {
                   </svg>
                 </div>
               </section>
+
+              {/* Persistent SQLite Database Manager & Interactive Workbench */}
+              <section>
+                <RealWorldDatabaseManager onDatabaseUpdate={pollTelemetry} />
+              </section>
+            </div>
+          )}
+
+          {activeTab === "database" && (
+            <div className="space-y-6 animate-in fade-in duration-200">
+              <RealWorldDatabaseManager onDatabaseUpdate={pollTelemetry} />
             </div>
           )}
 

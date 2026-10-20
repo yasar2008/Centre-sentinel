@@ -10,6 +10,7 @@ import {
   Radio,
   Sliders,
   Building2,
+  Database,
   Send,
   Cpu,
   Layers,
@@ -30,6 +31,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const navItems = [
     { id: "cockpit", label: "Executive Overview", icon: LayoutDashboard },
+    { id: "database", label: "Real SQLite Database", icon: Database },
     { id: "cctv", label: "Live Surveillance Feed", icon: Video },
     { id: "audit", label: "Attendance Matrix", icon: Users },
     { id: "assets", label: "Equipment & OCI", icon: Wrench },

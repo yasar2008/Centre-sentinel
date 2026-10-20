@@ -31,6 +31,7 @@ from PIL import Image
 from pydantic import BaseModel, Field
 
 from evaluator import AccuracyEvaluator, BoundingBox
+import database
 
 # Logging configuration
 logging.basicConfig(
@@ -107,6 +108,28 @@ class EdgeConfigUpdate(BaseModel):
     simulation_anomaly: Optional[str] = Field(
         None, description="'NORMAL' | 'GHOST_ATTENDANCE' | 'IDLE_LAB' | 'EQUIPMENT_DEFICIT'"
     )
+
+
+class BiometricPunchRequest(BaseModel):
+    candidate_id: str
+    batch_id: str = "BATCH-VNS-2026-01"
+    auth_mode: str = "FINGERPRINT_MINUTIAE"
+    terminal_device_id: str = "UIDAI-LIVE-TERM-01"
+    geofence_status: str = "VALID_PREMISES"
+
+
+class CandidateEnrollRequest(BaseModel):
+    candidate_id: str
+    batch_id: str = "BATCH-VNS-2026-01"
+    full_name: str
+    aadhaar_vid_masked: str
+    assigned_station: str
+    assigned_equipment: str
+    gender: str = "M"
+
+
+class SqlQueryRequest(BaseModel):
+    query: str
 
 
 # ============================================================================
@@ -821,6 +844,71 @@ def select_active_camera(cam_id: str) -> Dict[str, Any]:
         "telemetry_tick": telemetry.dict(),
     }
 
+
+# ============================================================================
+# Real-World Database REST API Endpoints (SQLite3 Inputs & Outputs)
+# ============================================================================
+
+
+@app.get("/api/v1/database/stats", tags=["Database"])
+def get_db_stats() -> Dict[str, Any]:
+    """Retrieves SQLite database metadata, table counts, and file storage footprint."""
+    return database.get_database_summary()
+
+
+@app.get("/api/v1/database/candidates", tags=["Database"])
+def get_db_candidates(batch_id: str = "BATCH-VNS-2026-01") -> List[Dict[str, Any]]:
+    """Fetches candidate records joined with real-world biometric punch and audit state."""
+    return database.get_all_candidates_with_attendance(batch_id)
+
+
+@app.post("/api/v1/database/punch", tags=["Database"])
+def punch_aebas_biometric(req: BiometricPunchRequest) -> Dict[str, Any]:
+    """REAL INPUT: Inserts a candidate biometric attendance punch into SQLite AEBAS logs."""
+    res = database.record_aebas_punch(
+        req.candidate_id,
+        req.batch_id,
+        req.auth_mode,
+        req.terminal_device_id,
+        req.geofence_status,
+    )
+    # Trigger an engine tick so the attendance gap recalculates against database immediately
+    engine.process_tick()
+    return res
+
+
+@app.post("/api/v1/database/candidate", tags=["Database"])
+def enroll_candidate(req: CandidateEnrollRequest) -> Dict[str, Any]:
+    """REAL INPUT: Enrolls a new trainee into the persistent SQLite database."""
+    return database.enroll_new_candidate(
+        req.candidate_id,
+        req.batch_id,
+        req.full_name,
+        req.aadhaar_vid_masked,
+        req.assigned_station,
+        req.assigned_equipment,
+        req.gender,
+    )
+
+
+@app.post("/api/v1/database/query", tags=["Database"])
+def run_sql_query(req: SqlQueryRequest) -> Dict[str, Any]:
+    """REAL INPUT/OUTPUT: Executes safe SQL queries in the Live SQL Workbench."""
+    return database.execute_readonly_sql(req.query)
+
+
+@app.get("/api/v1/database/backup", tags=["Database"])
+def download_sqlite_backup() -> Response:
+    """Streams the real kaushal_drishti.db SQLite database file for download and verification."""
+    from fastapi.responses import FileResponse
+
+    if not os.path.exists(database.DB_PATH):
+        raise HTTPException(status_code=404, detail="Database file not found")
+    return FileResponse(
+        database.DB_PATH,
+        media_type="application/x-sqlite3",
+        filename="kaushal_drishti_backup.db",
+    )
 
 
 if __name__ == "__main__":

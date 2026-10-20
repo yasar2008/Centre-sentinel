@@ -137,3 +137,45 @@ def test_blurred_frame_endpoint(test_client: TestClient) -> None:
     assert resp.status_code == 200
     assert resp.headers["content-type"] == "image/webp"
     assert len(resp.content) > 0
+
+
+def test_database_stats_endpoint(test_client: TestClient) -> None:
+    """Validate SQLite database metadata and tables count."""
+    resp = test_client.get("/api/v1/database/stats")
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["status"] == "HEALTHY"
+    assert "tables" in data
+    assert data["tables"]["centres"] >= 1
+    assert data["tables"]["candidates"] >= 1
+
+
+def test_database_biometric_punch_input(test_client: TestClient) -> None:
+    """Validate real biometric AEBAS punch input into SQLite."""
+    payload = {
+        "candidate_id": "TR-0841",
+        "batch_id": "BATCH-VNS-2026-01",
+        "auth_mode": "FINGERPRINT_MINUTIAE",
+        "terminal_device_id": "UIDAI-LIVE-TERM-01",
+        "geofence_status": "VALID_PREMISES",
+    }
+    resp = test_client.post("/api/v1/database/punch", json=payload)
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["status"] == "SUCCESS"
+    assert data["action"] == "AEBAS_BIOMETRIC_PUNCH_RECORDED"
+    assert data["candidate_id"] == "TR-0841"
+
+
+def test_database_sql_workbench_query(test_client: TestClient) -> None:
+    """Validate executing read-only SQL queries in the live workbench."""
+    resp = test_client.post(
+        "/api/v1/database/query",
+        json={"query": "SELECT candidate_id, full_name, assigned_station FROM candidates LIMIT 3;"},
+    )
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["status"] == "SUCCESS"
+    assert len(data["columns"]) == 3
+    assert len(data["rows"]) == 3
+
